@@ -1,0 +1,80 @@
+import { useState } from "react";
+import axios from "axios";
+import { userAuth } from "./AuthContext";
+import { useNavigate,Link } from "react-router-dom";
+
+export default function SignUp() {
+    const { login } = userAuth();
+    const navigate = useNavigate();
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [fname, setFname] = useState("");
+    const [lname, setLname] = useState("");
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        try {
+            const res = await axios.post("http://localhost:3000/user/signup", {
+                name,
+                email,
+                password,
+                fname,
+                lname,
+            });
+            login({ name, email });
+            navigate("/");
+            console.log(res.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    return (
+        <>
+            <h1>Signup page</h1>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    placeholder="Enter your username"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                />
+                <input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <input
+                    type="password"
+                    placeholder="Enter your Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Enter your First name"
+                    value={fname}
+                    onChange={(e) => setFname(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Enter your last name"
+                    value={lname}
+                    onChange={(e) => setLname(e.target.value)}
+                    required
+                />
+                <button type="submit">SignUp</button>
+            </form>
+            <p>ALready have an account?</p>
+            <Link to = "/Signin">
+            <button> Signin </button>
+            </Link>
+        </>
+    );
+}
