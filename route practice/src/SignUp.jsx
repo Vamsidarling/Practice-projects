@@ -24,8 +24,9 @@ export default function SignUp() {
             });
             login({ name, email });
             navigate("/signin");
-            console.log(res.data);
+            // console.log(res.data); // Can be removed if not needed for debugging
         } catch (error) {
+            // TODO: Implement user-facing error messages (e.g., "Email already exists")
             console.log(error);
         }
     }

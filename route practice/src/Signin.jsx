@@ -23,9 +23,9 @@ export default function Signin() {
         name: email.split("@")[0],
         email: email,
       });
-      // console.log(res.data);
       navigate("/Home"); // Redirect to home page after successful login
     } catch (error) {
+      // TODO: Implement user-facing error messages (e.g., "Invalid credentials")
       console.log(error);
     }
   }

@@ -3,10 +3,15 @@ import { useState } from "react";
 import { userAuth } from "./AuthContext"; // Import userAuth to check user status
 import { useNavigate, Link } from "react-router-dom"; // Import useNavigate for redirection and Link for navigation
 
+const DEFAULT_NO_CONTENT_MESSAGE = "No content generated. (Default Fallback)";
+
 export default function GeneareteContent() {
   const { user } = userAuth(); // Get the current user from context
   const navigate = useNavigate(); // Hook for programmatic navigation
   const [question, setQuestion] = useState("");
+  const [posts, setPosts] = useState([]); // To store generated posts
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const Generate = async (e) => {
     e.preventDefault();
@@ -14,38 +19,109 @@ export default function GeneareteContent() {
     // Safeguard: If for some reason this function is called without a user,
     // (e.g., if UI wasn't updated yet), redirect to signin.
     if (!user) {
-      alert("Please sign in to generate content."); // Simple prompt
+      // Consider replacing alert with a more integrated UI notification for better UX
+      alert("Please sign in to generate content.");
       // navigate("/Signin"); // Redirect to the sign-in page
       return; // Stop further execution of the Generate function
     }
 
+    setIsLoading(true);
+    setError(""); // Clear previous errors
+
     try {
-      console.log("Attempting to generate content for question:", question);
+      // console.log("Attempting to generate content for question:", question); // Keep for debugging if needed
       const resp = await axios.post(
         "http://localhost:3000/user/GenerateData",
         { question: question },
         { withCredentials: true }
       );
-      console.log("API Response:", resp);
-      console.log("Generated Data:", resp.data);
-      // TODO: Handle the successful response, e.g., display the generated content
-      // or navigate to a different page if needed.
-      // Example: navigate("/content-display-page");
-    } catch (error) {
-      console.error("Error generating content:", error);
-      alert("Failed to generate content. Please try again."); // User-friendly error
+      // console.log("Generated Data from API:", resp.data); // Keep for debugging if needed
+
+      let generatedText = DEFAULT_NO_CONTENT_MESSAGE;
+      const data = resp.data; // For easier access
+      // Log the type of data to understand its structure
+      // console.log("Type of resp.data:", typeof data); // Keep for debugging if needed
+
+      // --- Text Extraction ---
+      if (data && typeof data.ans === 'string') { // Check for the 'ans' property
+        generatedText = data.ans; // Assign the content from 'ans'
+        // console.log("Successfully extracted text from: data.ans"); // Keep for debugging if needed
+      } else {
+        // If none of the above matched, this warning will appear.
+        console.warn("Could not find generated text in API response. Full response:", resp.data);
+      }
+
+      // If generatedText is the fallback, don't try to split it or create posts from it.
+      if (generatedText !== DEFAULT_NO_CONTENT_MESSAGE && generatedText.trim() !== "") {
+        const individualTweets = generatedText.split(/~\n+/).filter(tweet => tweet.trim() !== ""); // Split by ~\n and remove empty strings
+
+        const newPosts = individualTweets.map((tweetContent, index) => ({
+          id: Date.now() + index, // Create a slightly varied ID for multiple posts from one call
+          prompt: question, // The same prompt generated all these tweets
+          content: tweetContent.trim(), // Store the individual tweet
+          timestamp: new Date().toLocaleString() // Consider a more robust date formatting library for consistency
+        }));
+
+        // Add new posts to the beginning. The order from API (after split) is preserved.
+        setPosts(prevPosts => [...newPosts, ...prevPosts]);
+      } else {
+        if (generatedText === DEFAULT_NO_CONTENT_MESSAGE) {
+          // Optionally, set an error or info message if the API truly returned no usable content
+          // setError("The AI couldn't generate content for this prompt.");
+        }
+      }
+
+      setQuestion(""); // Clear the input field
+    } catch (err) {
+      console.error("Error generating content:", err);
+      setError(err.response?.data?.message || "Failed to generate content. Please try again.");
     }
+    setIsLoading(false);
   };
 
   return (
-    <div className="generate-content-container">
+    <div className="generate-content-container" id="generate-content-area">
       <input
         type="text"
-        placeholder="Enter your input to generate content"
+        placeholder="What's your idea to generate the tweet "
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
       />
-      <button onClick={Generate}>Generate</button>
+      <button onClick={Generate} disabled={isLoading}>
+        {isLoading ? "Generating..." : "Generate"}
+      </button>
+
+      {error && <p className="error-message">{error}</p>}
+
+      <div className="posts-container">
+        {posts.length === 0 && !isLoading && !error && (
+          <p className="no-posts-message">No content generated yet. Enter a prompt above to start!</p>
+        )}
+        {posts.map(post => (
+          <div key={post.id} className="post-card">
+            <p className="post-prompt"><strong>Prompt:</strong> {post.prompt}</p>
+            <div className="post-content">
+              {/* Ensure post.content is a string before trying to split it */}
+              {typeof post.content === 'string' ? (
+                post.content.split('\n').map((line, index) => (
+                  // Render a non-breaking space for empty lines to ensure the <p> tag has content
+                  <p key={`post-${post.id}-line-${index}`}>{line || '\u00A0'}</p>
+                ))
+              ) : (
+                <p>Content is not available in the expected format.</p>
+              )}
+            </div>
+            <div className="post-footer">
+              <p className="post-timestamp">{post.timestamp}</p>
+              {/* Use post.content directly to get the content of the current post */}
+              <a href={`https://x.com/compose/post?text=${encodeURIComponent(post.content)}`} target="_blank" rel="noopener noreferrer" className="post-action-button">
+                Post on X
+              </a>
+              
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

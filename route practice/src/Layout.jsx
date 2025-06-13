@@ -2,7 +2,6 @@ import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react"; // Import useState and useEffect
 import { userAuth } from "./AuthContext";
 
-// Home import is not used directly in Layout's JSX, can be removed
 // import Home from "./Home";
 export default function Layout() {
   const { user, logout } = userAuth();
@@ -10,7 +9,7 @@ export default function Layout() {
   const [currentTheme, setCurrentTheme] = useState(() => {
     // Optional: Check localStorage for saved theme preference
     const savedTheme = localStorage.getItem('app-theme');
-    return savedTheme || 'light'; // Default to light if no preference saved
+    return savedTheme || 'dark'; // Default to dark if no preference saved
   });
 
   const handleLogout = () => {
