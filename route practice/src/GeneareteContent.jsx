@@ -38,7 +38,7 @@ export default function GeneareteContent() {
   };
 
   return (
-    <>
+    <div className="generate-content-container">
       <input
         type="text"
         placeholder="Enter your input to generate content"
@@ -46,7 +46,6 @@ export default function GeneareteContent() {
         onChange={(e) => setQuestion(e.target.value)}
       />
       <button onClick={Generate}>Generate</button>
-    </>
-    
+    </div>
   );
 }

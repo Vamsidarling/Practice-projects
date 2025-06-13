@@ -31,7 +31,8 @@ export default function SignUp() {
     }
 
     return (
-        <>
+        <div className="auth-form-container"> {/* Optional: for centering or specific page styling */}
+
             <h1>Signup page</h1>
             <form onSubmit={handleSubmit}>
                 <input
@@ -71,10 +72,12 @@ export default function SignUp() {
                 />
                 <button type="submit">SignUp</button>
             </form>
-            <p>ALready have an account?</p>
-            <Link to = "/Signin">
-            <button> Signin </button>
-            </Link>
-        </>
+            <div className="auth-form-link-container">
+                <p>Already have an account?</p>
+                <Link to="/Signin">
+                    <button className="secondary">Signin</button> {/* Example of using secondary button style */}
+                </Link>
+            </div>
+        </div>
     );
 }

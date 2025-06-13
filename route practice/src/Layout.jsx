@@ -1,4 +1,5 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react"; // Import useState and useEffect
 import { userAuth } from "./AuthContext";
 
 // Home import is not used directly in Layout's JSX, can be removed
@@ -6,50 +7,58 @@ import { userAuth } from "./AuthContext";
 export default function Layout() {
   const { user, logout } = userAuth();
   const navigate = useNavigate();
+  const [currentTheme, setCurrentTheme] = useState(() => {
+    // Optional: Check localStorage for saved theme preference
+    const savedTheme = localStorage.getItem('app-theme');
+    return savedTheme || 'light'; // Default to light if no preference saved
+  });
 
   const handleLogout = () => {
     logout();
     navigate("/Home");
   };
 
+  useEffect(() => {
+    document.body.classList.remove('light-theme', 'dark-theme');
+    document.body.classList.add(`${currentTheme}-theme`);
+    localStorage.setItem('app-theme', currentTheme); // Optional: Save preference
+  }, [currentTheme]);
+
+  const toggleTheme = () => {
+    setCurrentTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+  };
+
   return (
     <>
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "10px 20px",
-          borderBottom: "1px solid #eee",
-          marginBottom: "20px",
-        }}
-      >
+      <header className="app-header">
         <div>
           {/* 
             The <navigate> tag was incorrect. Use <Link> from react-router-dom.
             To make it look like text, style the Link component itself.
           */}
-          <Link to="/Home" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Link to="/Home" className="brand-link">
             {/* <button>Home</button> */}
             {/* 'navistyle' was a typo, it should be 'style'. */}
-            <h1 style={{ margin: 0, fontSize: "1.5em" }}>Social Media</h1>
+            <h1>Social Media</h1>
           </Link>
         </div>
         <nav>
-          {/* style={{ display: 'flex', alignItems: 'center' }} */}
+          <button onClick={toggleTheme} className="theme-toggle">
+            Switch to {currentTheme === 'light' ? 'Dark' : 'Light'} Mode
+          </button>
           {/* <Link to="/Home" style={{ marginRight: '15px' }}>
                         <button>Home</button>
                     </Link> */}
           {user ? (
             <>
-              <span style={{ marginRight: "15px" }}>Welcome, {user.name}</span>
-              <button onClick={handleLogout} style={{ padding: "5px 10px" }}>
+              <span className="user-greeting">Welcome, {user.name}</span>
+              <button onClick={handleLogout}>
                 Logout
               </button>
             </>
           ) : (
             <>
-              <Link to="/SignUp" style={{ marginRight: "10px" }}>
+              <Link to="/SignUp">
                 <button>SignUp</button>
               </Link>
               <Link to="/Signin">
@@ -59,9 +68,7 @@ export default function Layout() {
           )}
         </nav>
       </header>
-      <main style={{ padding: "0 20px" }}>
-        {" "}
-        {/* Added padding to main content area */}
+      <main className="app-main-content">
         <Outlet />
       </main>
     </>
