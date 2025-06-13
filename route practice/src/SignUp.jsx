@@ -23,7 +23,7 @@ export default function SignUp() {
                 lname,
             });
             login({ name, email });
-            navigate("/");
+            navigate("/signin");
             console.log(res.data);
         } catch (error) {
             console.log(error);

@@ -24,7 +24,7 @@ export default function Signin() {
         email: email,
       });
       // console.log(res.data);
-      navigate("/Details"); // Redirect to home page after successful login
+      navigate("/Home"); // Redirect to home page after successful login
     } catch (error) {
       console.log(error);
     }
