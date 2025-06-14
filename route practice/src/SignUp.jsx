@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { userAuth } from "./AuthContext";
 import { useNavigate,Link } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 export default function SignUp() {
     const { login } = userAuth();
@@ -22,12 +23,13 @@ export default function SignUp() {
                 fname,
                 lname,
             });
-            login({ name, email });
+            // login({ name, email }); // Consider if user should log in automatically or go to signin page
+            toast.success("Sign up successful! Please sign in."); // Inform user to sign in
             navigate("/signin");
-            // console.log(res.data); // Can be removed if not needed for debugging
         } catch (error) {
-            // TODO: Implement user-facing error messages (e.g., "Email already exists")
             console.log(error);
+            const errorMessage = error.response?.data?.message || "Sign-up failed. Please try again.";
+            toast.error(errorMessage);
         }
     }
 

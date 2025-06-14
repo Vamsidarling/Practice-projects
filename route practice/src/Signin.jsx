@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { userAuth } from "./AuthContext";
 import { useNavigate ,Link} from "react-router-dom";
+import { toast } from 'react-toastify';
 
 export default function Signin() {
   const { login } = userAuth();
@@ -23,10 +24,12 @@ export default function Signin() {
         name: email.split("@")[0],
         email: email,
       });
+      toast.success("Signed in successfully!");
       navigate("/Home"); // Redirect to home page after successful login
     } catch (error) {
-      // TODO: Implement user-facing error messages (e.g., "Invalid credentials")
       console.log(error);
+      const errorMessage = error.response?.data?.message || "Sign-in failed. Please check your credentials.";
+      toast.error(errorMessage);
     }
   }
 

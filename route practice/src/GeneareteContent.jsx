@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react"; // Import useEffect and useRef
-import { userAuth } from "./AuthContext"; // Import userAuth to check user status
-import { useNavigate, Link } from "react-router-dom"; // Import useNavigate for redirection and Link for navigation
+import { userAuth } from "./AuthContext";
+import { useNavigate, Link, useOutletContext } from "react-router-dom"; // Import useOutletContext
+import { toast } from 'react-toastify';
 
 const DEFAULT_NO_CONTENT_MESSAGE = "No content generated. (Default Fallback)";
 
@@ -13,6 +14,7 @@ export default function GeneareteContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef(null); // Create a ref for the input element
+  const outletContext = useOutletContext(); // Access Outlet context
 
   // useEffect to focus the input field when the component mounts
   useEffect(() => {
@@ -22,6 +24,47 @@ export default function GeneareteContent() {
     }
   }, [user]); // Re-run if the user state changes (e.g., after login, if the component was already mounted)
 
+  // Effect to clear content when a new session is triggered from Layout
+  useEffect(() => {
+    // Check if newSessionKey exists in context and has changed (initial mount is also a change)
+    if (outletContext && outletContext.newSessionKey) {
+      // We don't need to compare with a previous value of newSessionKey here,
+      // simply reacting to its presence and change is enough to clear.
+      setQuestion("");
+      setPosts([]);
+      setError(""); // Also clear any existing errors
+    }
+  }, [outletContext?.newSessionKey]); // Depend specifically on newSessionKey from context
+
+  // Effect to load history when selectedHistoryItem changes from Layout
+  useEffect(() => {
+    // Check if outletContext and selectedHistoryItem exist
+    if (outletContext && outletContext.selectedHistoryItem) {
+      const { question: historyQuestion, content: historyContent, createdAt: historyTimestamp } = outletContext.selectedHistoryItem;
+      
+      setQuestion(historyQuestion || ""); // Set the prompt input
+
+      if (historyContent && typeof historyContent === 'string') {
+        const individualTweets = historyContent.split(/~\n+/).filter(tweet => tweet.trim() !== "");
+        const historicalPosts = individualTweets.map((tweetContent, index) => ({
+          // Use a more unique ID, perhaps combining original ID and index if available, or just a new timestamp
+          id: outletContext.selectedHistoryItem._id ? `${outletContext.selectedHistoryItem._id}-${index}` : Date.now() + index, 
+          prompt: historyQuestion,
+          content: tweetContent.trim(),
+          // Use the timestamp from the history item if available, otherwise generate a new one
+          timestamp: historyTimestamp ? new Date(historyTimestamp).toLocaleString() : new Date().toLocaleString() 
+        }));
+        setPosts(historicalPosts); // Display the historical posts
+      } else {
+        setPosts([]); // Clear posts if no valid content from history
+      }
+      setError(""); // Clear any previous errors
+      // Notify Layout to clear the selected item after loading to prevent re-processing on unrelated re-renders
+      if (outletContext.clearSelectedHistory) {
+        outletContext.clearSelectedHistory();
+      }
+    }
+  }, [outletContext]); // Depend on the entire outletContext object
 
   const Generate = async (e) => {
     e.preventDefault();
@@ -33,6 +76,12 @@ export default function GeneareteContent() {
       alert("Please sign in to generate content.");
       // navigate("/Signin"); // Redirect to the sign-in page
       return; // Stop further execution of the Generate function
+    }
+
+    if (question.trim().length < 10) {
+      toast.error("Please provide more context for your idea (at least 10 characters).");
+      setIsLoading(false); // Ensure loading state is reset if we return early
+      return;
     }
 
     setIsLoading(true);
@@ -84,7 +133,9 @@ export default function GeneareteContent() {
       setQuestion(""); // Clear the input field
     } catch (err) {
       console.error("Error generating content:", err);
-      setError(err.response?.data?.message || "Failed to generate content. Please try again.");
+      const errorMessage = err.response?.data?.message || "Failed to generate content. Please try again.";
+      setError(errorMessage); // Keep setting local error state if you use it in the UI
+      toast.error(errorMessage);
     }
     setIsLoading(false);
   };

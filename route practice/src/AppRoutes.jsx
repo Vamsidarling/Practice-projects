@@ -5,6 +5,7 @@ import Layout from "./Layout";
 import { ProfileWrapper } from "./userprofile";
 import { userAuth } from "./AuthContext";
 import Home from "./Home";
+import Sidebar from "./SideBar";
 import GeneareteContent from "./GeneareteContent";
 function PrivateRoute({ children }) {
   const { user } = userAuth();
@@ -26,7 +27,15 @@ export default function AppComponent() {
         <Route path="/Signup" element={<SignUp />} />
         <Route path="/Signin" element={<Signin />} />
         <Route path="/Home" element={<Home />} />
-        <Route path="/Details" element={<ProfileWrapper />} />
+        <Route
+          path="/Profile"
+          element={
+            <PrivateRoute>
+              <ProfileWrapper />
+            </PrivateRoute>
+          }
+        />
+        {/* <Route path="/sliderBar" element={<Sidebar />} /> */}
         <Route path="*" element={<Navigate to="/Home" />} />
       </Route>
     </Routes>

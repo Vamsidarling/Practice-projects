@@ -385,6 +385,706 @@ label {
   padding-bottom: 10%;
   /* padding-left: 0%; */
 }
+/* Add to your s:\Cloned Projects\Practice-projects\route practice\src\index.css */
+
+/* Main container for sidebar layout */
+.app-container-with-sidebar {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+  overflow: hidden; /* Prevent scrollbars on the main container */
+}
+
+.app-sidebar {
+  width: 260px; /* ChatGPT-like width */
+  background-color: var(--color-background-sidebar, #202123); /* Dark background like ChatGPT */
+  color: var(--color-text-sidebar, #ececf1);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0; /* Prevent sidebar from shrinking */
+  border-right: 1px solid var(--color-border-sidebar, #3a3b3c);
+}
+
+.sidebar-header {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--color-border-sidebar, #3a3b3c);
+}
+
+.new-generation-button {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  background-color: transparent;
+  color: var(--color-text-sidebar, #ececf1);
+  border: 1px solid var(--color-border-button-sidebar, #56585A);
+  border-radius: 0.375rem;
+  text-align: left;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.new-generation-button:hover {
+  background-color: var(--color-background-button-sidebar-hover, #2A2B2D);
+}
+
+.sidebar-history {
+  flex-grow: 1;
+  overflow-y: auto; /* Allow history to scroll */
+  padding: 0.75rem;
+}
+
+.history-title {
+  font-size: 0.75rem;
+  color: var(--color-text-muted-sidebar, #8e8ea0);
+  padding: 0.5rem 0.75rem;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.sidebar-history ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-history li {
+  margin-bottom: 0.25rem;
+}
+
+.history-item-button {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  background-color: transparent;
+  color: var(--color-text-sidebar, #ececf1);
+  border: none;
+  border-radius: 0.375rem;
+  text-align: left;
+  font-size: 0.875rem;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color 0.2s ease;
+}
+
+.history-item-button:hover {
+  background-color: var(--color-background-item-sidebar-hover, #2A2B2D);
+}
+
+.no-history-message {
+  color: var(--color-text-muted-sidebar, #8e8ea0);
+  font-style: italic;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+}
+
+/* Wrapper for header and main content */
+.main-content-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Prevent this wrapper from showing scrollbars */
+}
+
+.app-header {
+  /* Your existing header styles */
+  /* Make sure it doesn't overlap with the sidebar if it's not part of the flex flow */
+  flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.app-main-content {
+  flex-grow: 1;
+  overflow-y: auto; /* Allow main content area to scroll */
+  padding: 1.5rem 2rem; /* Or your existing padding */
+  background-color: var(--color-background); /* Ensure main content has a background */
+}
+/* s:\Cloned Projects\Practice-projects\route practice\src\index.css */
+
+/* ... your existing styles ... */
+
+.app-container-with-sidebar {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  transition: padding-left 0.3s ease-in-out; /* For smoother transition if main content shifts */
+}
+
+/* Sidebar Styles */
+.app-sidebar {
+  width: 260px;
+  background-color: var(--color-background-sidebar, #202123);
+  color: var(--color-text-sidebar, #ececf1);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border-right: 1px solid var(--color-border-sidebar, #3a3b3c);
+  transition: width 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Smooth transition for sidebar */
+  opacity: 1;
+}
+
+.app-container-with-sidebar.sidebar-closed .app-sidebar {
+  /* This approach hides it completely. For sliding, you'd use transform. */
+  /* For this implementation, we are conditionally rendering it, so this specific
+     CSS for hiding might not be strictly necessary if conditional rendering is enough.
+     However, if you opt to always render and hide with CSS, this is how you'd do it.
+  */
+  width: 0;
+  opacity: 0;
+  overflow: hidden; /* Hide content when width is 0 */
+  padding: 0;
+  border-right: none;
+}
+
+
+/* Main Content Wrapper */
+.main-content-wrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: margin-left 0.3s ease-in-out; /* Smooth transition for margin */
+  margin-left: 0; /* Default when sidebar is closed or not present */
+}
+
+/* Adjust main content when sidebar is open */
+/* This rule is only needed if the sidebar is NOT part of the flex flow of its parent
+   and is instead absolutely positioned or fixed.
+   Given our current flex setup in app-container-with-sidebar, this might not be needed
+   if the sidebar simply takes up space when present.
+   Let's assume for now the conditional rendering handles the space.
+*/
+/*
+.main-content-wrapper.sidebar-open {
+  margin-left: 260px; // Width of the sidebar
+}
+*/
+
+/* Header adjustments */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-background-nav);
+  color: var(--color-text);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+
+.header-left-section {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-toggle-button {
+  background: none;
+  border: none;
+  color: var(--color-text); /* Or your desired icon color */
+  font-size: 1.5rem; /* Adjust size of hamburger icon */
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-right: 0.5rem; /* Space between icon and brand */
+  line-height: 1; /* Ensure icon is vertically centered */
+}
+
+.sidebar-toggle-button:hover {
+  opacity: 0.7;
+}
+
+/* ... rest of your .app-sidebar, .sidebar-header, .new-generation-button, etc. styles ... */
+/* Ensure they don't rely on the sidebar always being a fixed width if you use the width:0 approach */
+
+.sidebar-header, .sidebar-history {
+  /* Ensure these are hidden properly when sidebar width is 0 */
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
+/* In your index.css */
+.profile-menu-widget-container {
+  position: relative;
+  display: inline-block; /* Or block if it should take full width */
+  margin-bottom: 1rem; /* Space below the dropdown widget */
+}
+
+.profile-menu-trigger-button {
+  padding: 0.5rem 1rem;
+  background-color: var(--color-background-button, transparent);
+  color: var(--color-text);
+  border: 1px solid var(--color-border, transparent);
+  border-radius: 0.375rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.profile-menu-trigger-button:hover {
+  background-color: var(--color-background-hover);
+}
+
+.profile-dropdown-menu-on-page {
+  position: absolute;
+  top: 100%;
+  right: 0; /* Aligns dropdown to the right of the trigger */
+  background-color: var(--color-background-card);
+  border: 1px solid var(--color-border);
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1050;
+  min-width: 250px; /* Adjust as needed */
+  padding: 0.5rem 0;
+  margin-top: 0.25rem;
+}
+
+.profile-dropdown-menu-on-page .dropdown-item {
+  /* ... your existing .dropdown-item styles ... */
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  /* ... etc. ... */
+}
+/* In your index.css */
+
+/* ... existing styles ... */
+
+.app-header nav .profile-menu-widget-container {
+  margin-left: 0.75rem; /* Or adjust as needed */
+}
+
+.header-profile-trigger {
+  /* Style it like other header buttons or as desired */
+  background: none;
+  border: 1px solid transparent; /* Or a visible border */
+  color: var(--color-text);
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 1rem; /* Match other header elements */
+}
+/* s:\Cloned Projects\Practice-projects\route practice\src\index.css */
+
+/* ... your existing styles ... */
+
+/* Styles for the profile dropdown menu in the HEADER */
+.header-profile-dropdown {
+  position: absolute;
+  top: 100%; /* Position below the trigger button */
+  right: 0;  /* Align to the right edge of its container (.profile-menu-widget-container) */
+  background-color: var(--color-background-card, #ffffff); /* Use card background or a specific dropdown bg */
+  border: 1px solid var(--color-border, #e0e0e0);
+  border-radius: 0.375rem; /* Consistent border radius */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* A slightly more pronounced shadow */
+  z-index: 1050; /* CRUCIAL: High z-index to appear above other content */
+  min-width: 220px; /* Adjust as needed */
+  padding: 0.5rem 0; /* Vertical padding for the menu itself */
+  margin-top: 0.25rem; /* Small gap between trigger and menu */
+  list-style: none; /* If you were to use <ul> */
+}
+
+/* General style for items within any dropdown menu on the page */
+.profile-dropdown-menu-on-page .dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem; /* Consistent padding for all items */
+  text-align: left;
+  font-size: 0.95rem; /* Consistent font size */
+  color: var(--color-text, #333333);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none; /* For Link components */
+  box-sizing: border-box; /* Ensures padding doesn't expand width unexpectedly */
+  white-space: nowrap; /* Prevent text wrapping if not desired */
+}
+
+.profile-dropdown-menu-on-page .dropdown-item:hover {
+  background-color: var(--color-background-hover, #f5f5f5);
+  color: var(--color-text-hover, var(--color-primary-accent)); /* Optional: change text color on hover */
+}
+
+/* Specific styling for the user greeting item within the header dropdown */
+.header-profile-dropdown .user-greeting-item {
+  color: var(--color-text-muted, #555555); /* Slightly muted color for "Signed in as" */
+  padding-bottom: 0.75rem; /* Space below the greeting text */
+  margin-bottom: 0.5rem; /* Space before the next item (e.g., Logout button) */
+  border-bottom: 1px solid var(--color-border, #e0e0e0); /* Separator line */
+  cursor: default; /* This item is not clickable */
+  font-size: 0.9rem; /* Slightly smaller font for this info text */
+}
+
+.header-profile-dropdown .user-greeting-item strong {
+  color: var(--color-text, #333333); /* Make email more prominent */
+  font-weight: 500; /* Or 600 for bolder */
+  display: block; /* Ensure email is on its own line if needed */
+  margin-top: 0.25rem; /* Small space above the email */
+}
+
+/* Ensure no hover effect for the greeting item itself if it's just informational */
+.header-profile-dropdown .user-greeting-item:hover {
+  background-color: transparent;
+  color: var(--color-text-muted, #555555); /* Keep original text color */
+}
+
+/* Styling for the logout button within the header dropdown */
+.header-profile-dropdown .logout-item {
+  color: var(--color-danger, #dc3545); /* Use a danger color for logout */
+}
+
+.header-profile-dropdown .logout-item:hover {
+  background-color: var(--color-danger-hover, #c82333);
+  color: var(--color-primary-accent-text, #ffffff); /* Text color on danger hover */
+}
+
+/* Ensure the trigger button in the header is styled appropriately */
+.header-profile-trigger {
+  /* Your existing styles are likely fine, but ensure it aligns well */
+  background: none;
+  border: none; /* Or a subtle border */
+  color: var(--color-text);
+  padding: 0.5rem 0.75rem; /* Adjust padding to fit your header */
+  border-radius: 0.375rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem; /* Or match header font size */
+}
+.header-profile-trigger:hover {
+  background-color: var(--color-background-hover, #f0f0f0);
+}
+.header-profile-trigger .dropdown-arrow {
+  margin-left: 0.5rem;
+  font-size: 0.7em;
+  transition: transform 0.2s ease-in-out;
+}
+.header-profile-trigger .dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+/* s:\Cloned Projects\Practice-projects\route practice\src\index.css */
+
+/* ... your existing styles ... */
+
+/* Styles for the profile dropdown trigger button in the HEADER */
+.header-profile-trigger {
+  background-color: var(--color-primary-accent, #007bff); /* Example background */
+  color: var(--color-primary-accent-text, #ffffff);
+  border: none;
+  border-radius: 50%; /* Makes it round */
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+  padding: 0; /* Remove padding to let content center */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center content (initials and arrow) */
+  font-size: 1rem; /* Base font size for content inside */
+  position: relative; /* For positioning the arrow if needed, though flex handles it well */
+  overflow: hidden; /* Ensures content stays within the circle */
+  transition: background-color 0.2s ease;
+}
+
+.header-profile-trigger:hover {
+  background-color: var(--color-primary-accent-hover, #0056b3); /* Darken on hover */
+}
+
+.header-profile-trigger .profile-icon-initials {
+  font-size: 1.2rem; /* Size of the letter */
+  font-weight: 500;
+  line-height: 1; /* Helps with vertical centering */
+}
+
+/* Improved Dropdown Arrow Styling */
+.header-profile-trigger .dropdown-arrow {
+  /* Remove margin-left if using flexbox for centering */
+  /* margin-left: 0.5rem; */
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent; /* Adjust size of arrow */
+  border-right: 5px solid transparent; /* Adjust size of arrow */
+  border-top: 6px solid var(--color-primary-accent-text, #ffffff); /* Arrow color, pointing down */
+  transition: transform 0.2s ease-in-out;
+  margin-left: 6px; /* Space between initials and arrow */
+}
+
+.header-profile-trigger .dropdown-arrow.open {
+  transform: rotate(180deg); /* Flips arrow up when menu is open */
+}
+
+
+/* Ensure the container for the dropdown trigger in the header has relative positioning */
+.app-header nav .profile-menu-widget-container {
+  position: relative;
+  margin-left: 0.75rem;
+  display: flex; /* Helps align button if there are other elements */
+  align-items: center;
+}
+
+/* Styles for the dropdown menu itself (ensure z-index is high) */
+.header-profile-dropdown {
+  position: absolute;
+  top: calc(100% + 8px); /* Position below the trigger button with a small gap */
+  right: 0;
+  background-color: var(--color-background-card, #ffffff);
+  border: 1px solid var(--color-border, #e0e0e0);
+  border-radius: 0.375rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  z-index: 1050; /* CRUCIAL for appearing above other content */
+  min-width: 240px; /* Adjust as needed */
+  padding: 0.5rem 0;
+  /* margin-top: 0.25rem; /* Replaced by calc in top */
+  list-style: none;
+}
+
+/* General style for items within any dropdown menu on the page */
+.profile-dropdown-menu-on-page .dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.95rem;
+  color: var(--color-text, #333333);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.profile-dropdown-menu-on-page .dropdown-item:hover {
+  background-color: var(--color-background-hover, #f5f5f5);
+  color: var(--color-text-hover, var(--color-primary-accent));
+}
+/* In your index.css */
+
+/* Wrapper for the PreviewCard in the header */
+.header-profile-preview-card-wrapper {
+  position: relative; /* Important for positioning the PreviewCardContent */
+  margin-left: 0.75rem; /* Or your desired spacing */
+}
+/* Add or modify these styles in your s:\Cloned Projects\Practice-projects\route practice\src\index.css */
+
+/* Styles for the profile trigger button ON THE PROFILE PAGE */
+.profile-preview-trigger {
+  background-color: var(--color-primary-accent, #007bff); /* Or a more neutral color if preferred */
+  color: var(--color-primary-accent-text, #ffffff); /* Color of the initial */
+  border: none;
+  border-radius: 50%; /* Makes it round */
+  width: 36px;   /* Smaller, more icon-like size */
+  height: 36px;  /* Smaller, more icon-like size */
+  padding: 0;    /* Remove padding to let content center precisely */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem; /* Base font size for the initial, can be adjusted */
+  overflow: hidden; /* Ensures content stays within the circle */
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  /* Optional: Add a subtle shadow for depth */
+  /* box-shadow: 0 1px 3px rgba(0,0,0,0.1); */
+}
+
+.profile-preview-trigger:hover {
+  background-color: var(--color-primary-accent-hover, #0056b3); /* Darken on hover */
+  /* Optional: Slightly larger shadow on hover */
+  /* box-shadow: 0 2px 5px rgba(0,0,0,0.15); */
+}
+
+.profile-preview-trigger:focus {
+  outline: none; /* Remove default outline if you add a custom one */
+  box-shadow: 0 0 0 2px var(--color-background, #000000), 0 0 0 4px var(--color-primary-accent, #007bff); /* Google-like focus ring */
+}
+
+.profile-icon-initials-page {
+  font-size: 0.95rem; /* Adjust size of the letter to fit the smaller button */
+  font-weight: 500; /* Or 600 for slightly bolder */
+  line-height: 1; /* Helps with vertical centering of the character */
+  text-transform: uppercase; /* Ensure it's uppercase */
+}
+
+/* Styles for the PreviewCardContent itself (the card that opens) */
+.profile-preview-content-card { /* This class is on PreviewCardContent in userprofile.jsx */
+  background-color: var(--color-background-card, #fff);
+  border: 1px solid var(--color-border, #ececec);
+  border-radius: 0.5rem; /* A slightly larger radius for the card */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  z-index: 1000; /* Ensure it's on top if it's a pop-up/hover card */
+  /* Tailwind's w-72 is width: 18rem; you can set a specific width here if not using Tailwind for it */
+  /* width: 280px; */
+}
+
+/* Styling for the logout button within the PreviewCard */
+.preview-card-logout-button {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  background-color: transparent;
+  color: var(--color-danger, #000000);
+  border: 1px solid transparent; /* Make it look more like a menu item */
+  border-radius: 0.375rem;
+  text-align: left; /* Align text to the left like a menu item */
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.preview-card-logout-button:hover {
+  background-color: var(--color-danger-hover-bg, rgba(0, 0, 0, 0.1)); /* Subtle background on hover */
+  color: var(--color-danger-hover-text, var(--color-danger)); /* Keep text color or slightly darken */
+}
+
+/* If you're using Tailwind classes like 'text-muted-foreground' from the example,
+   ensure your Tailwind config or global CSS defines what these mean, or replace them
+   with your own theme variables. Example: */
+.text-muted-foreground { /* This is a Tailwind class, provide your equivalent */
+  color: var(--color-text-muted, #6c757d);
+}
+.font-semibold { font-weight: 600; }
+.text-lg { font-size: 1.125rem; }
+.text-sm { font-size: 0.875rem; }
+.text-center { text-align: center; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.gap-3 { gap: 0.75rem; }
+.p-4 { padding: 1rem; }
+.my-2 { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+hr.my-2 { border-top-width: 1px; border-color: var(--color-border); }
+
+
+/* Your existing .header-profile-trigger styles should mostly work */
+/* .header-profile-trigger { ... } */
+/* .profile-icon-initials { ... } */
+
+/* Styling for the content card specifically in the header */
+.header-profile-preview-content-card {
+  background-color: var(--color-background-card, #000000);
+  border: 1px solid var(--color-border, #e0e0e0);
+  border-radius: 0.5rem; /* Example */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1050; /* Ensure it's on top */
+  /* Tailwind's w-72 is width: 18rem; */
+}
+
+/* If not using Tailwind, define these or apply styles directly */
+.header-profile-preview-content-card .flex { display: flex; }
+.header-profile-preview-content-card .flex-col { flex-direction: column; }
+.header-profile-preview-content-card .gap-3 { gap: 0.75rem; }
+.header-profile-preview-content-card .p-4 { padding: 1rem; }
+.header-profile-preview-content-card .text-center { text-align: center; }
+.header-profile-preview-content-card .font-semibold { font-weight: 600; }
+.header-profile-preview-content-card .text-lg { font-size: 1.125rem; }
+.header-profile-preview-content-card .text-sm { font-size: 0.875rem; }
+.header-profile-preview-content-card .text-muted-foreground { color: var(--color-text-muted, #6c757d); }
+.header-profile-preview-content-card .my-2 { margin-top: 0.5rem; margin-bottom: 0.5rem; }
+.header-profile-preview-content-card hr { border-top-width: 1px; border-color: var(--color-border); }
+
+
+.preview-card-logout-button {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  background-color: transparent;
+  color: var(--color-danger, #fff9f9);
+  border: 1px solid transparent; /* Or a subtle border */
+  border-radius: 0.375rem;
+  text-align: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.preview-card-logout-button:hover {
+  background-color: var(--color-danger-hover-bg, var(--color-danger)); /* Use a specific var or fallback */
+  color: var(--color-danger-hover-text, #fff);
+  border-color: var(--color-danger-hover-bg, var(--color-danger));
+}
+
+/* Specific styling for the user greeting item within the header dropdown */
+.header-profile-dropdown .user-greeting-item {
+  color: var(--color-text-muted, #c51313);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border, #e0e0e0);
+  cursor: default;
+  font-size: 0.9rem;
+}
+
+.header-profile-dropdown .user-greeting-item strong {
+  color: var(--color-text, #333333);
+  font-weight: 500;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.header-profile-dropdown .user-greeting-item:hover {
+  background-color: transparent;
+  color: var(--color-text-muted, #555555);
+}
+
+/* Styling for the logout button within the header dropdown */
+.header-profile-dropdown .logout-item {
+  color: var(--color-danger, #dc3545);
+}
+
+.header-profile-dropdown .logout-item:hover {
+  background-color: var(--color-danger-hover, #c82333);
+  color: var(--color-primary-accent-text, #ffffff);
+}
+
+
+/* ... rest of your styles ... */
+
+
+/* Ensure the container for the dropdown trigger in the header has relative positioning */
+.app-header nav .profile-menu-widget-container {
+  position: relative; /* This is crucial for the absolute positioning of the dropdown */
+  margin-left: 0.75rem; /* Example spacing */
+}
+
+/* ... rest of your styles ... */
+
+.header-profile-trigger:hover {
+  /* background-color: var(--color-background-hover);  */
+  background-color: transparent;/* Example hover */
+}
+
+/* The .profile-dropdown-menu-on-page might need slight adjustments
+   if it's in the header, e.g., for z-index or exact positioning.
+   The class .header-profile-dropdown can be used for these overrides.
+*/
+.header-profile-dropdown {
+  /* Example: ensure it's above the sidebar if sidebar is also sticky/fixed */
+  z-index: 1051;
+}
+
+.profile-dropdown-menu-on-page .user-greeting-item {
+  padding: 0.75rem 1rem;
+  color: var(--color-text);
+  cursor: default;
+}
+.profile-dropdown-menu-on-page .user-greeting-item strong {
+  font-weight: 500;
+}
+
+/* ... other dropdown item styles (logout, arrow) ... */
+
+.app-container-with-sidebar.sidebar-closed .sidebar-header,
+.app-container-with-sidebar.sidebar-closed .sidebar-history {
+  opacity: 0;
+}
+
+
+/* Define color variables (example for a dark theme sidebar) */
+/* :root {
+  --color-background-sidebar: #202123;
+  --color-text-sidebar: #ececf1;
+  --color-border-sidebar: #3a3b3c;
+  --color-border-button-sidebar: #56585A;
+  --color-background-button-sidebar-hover: #2A2B2D;
+  --color-text-muted-sidebar: #8e8ea0;
+  --color-background-item-sidebar-hover: #2A2B2D;
+} */
+/* You'll also need light theme equivalents if you support theme switching */
+
 .generate-content-container button {
   align-self: flex-start;
   padding: 0.75rem 1.5rem; /* 12px 24px */
