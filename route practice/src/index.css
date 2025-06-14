@@ -1,5 +1,41 @@
 /* s:\Cloned Projects\Practice-projects\route practice\src\index.css */
-/* -------------------------------------------------------------------------- */
+/* Dark theme by default */
+:root {
+  color-scheme: dark;
+  
+  /* Dark theme colors */
+  --color-bg: #121212;
+  --color-bg-secondary: #1e1e1e;
+  --color-bg-tertiary: #2a2a2a;
+  --color-text-primary: #e0e0e0;
+  --color-text-secondary: #a0a0a0;
+  --color-text-muted: #757575;
+  --color-border: #333333;
+  --color-border-hover: #444444;
+  --color-primary-accent: #1e90ff;
+  --color-primary-accent-hover: #4da6ff;
+  --color-primary-accent-text: #ffffff;
+  --hero-text: #f0f0f0;
+  
+  /* Shadows */
+  --color-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --color-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --color-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3),
+    0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    
+  /* Form elements */
+  --color-input-bg: #1e1e1e;
+  --color-input-border: #383838;
+  --color-input-focus-border: #1e90ff;
+  --color-input-focus-shadow: 0 0 0 3px rgba(30, 144, 255, 0.3);
+  
+  /* Links */
+  --color-link: #1e90ff;
+  --color-link-hover: #4da6ff;
+}
+
+/* --------------------------------------------------------------------------
 /*                                 Base Reset                                 */
 /* -------------------------------------------------------------------------- */
 *,
@@ -49,7 +85,9 @@
   --color-link-hover: var(--color-primary-accent-hover);
 }
 
-body.dark-theme {
+/* Dark theme styles */
+[data-theme='dark'],
+[data-theme='dark'] body {
   /* Dark Theme Overrides */
   --color-bg: #121212; /* Dark, but not pure black for better depth */
   --color-bg-secondary: #1e1e1e;
@@ -346,11 +384,9 @@ label {
   align-self: flex-start;
   padding: 0.75rem 1.5rem; /* 12px 24px */
   font-size: 1rem; /* 16px */
-    margin-bottom: 0;  line-height: 1.6;
+  margin-bottom: 0;  
+  line-height: 1.6;
 }
-  /* margin-bottom: 0; */
-
-
 
 .post-footer {
   display: flex;
@@ -631,3 +667,107 @@ body.dark-theme .hero-title {
     font-size: 0.8125rem;
   }
 }
+/* Add these styles to your s:\Cloned Projects\Practice-projects\route practice\src\index.css file */
+
+/* Hero Section Specific Styles */
+.hero-section {
+  text-align: center;
+  padding: 4rem 1rem; /* Increased padding for more space */
+  overflow: hidden; /* To ensure animations don't cause scrollbars prematurely */
+}
+
+.hero-title {
+  font-size: 3.5rem; /* Larger font size */
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--hero-text, #111827); /* Default dark color for hero text */
+  
+  /* Gradient text effect */
+  background: linear-gradient(90deg, #ff8a00, #e52e71, #6a0dad, #007cf0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  background-size: 300% 300%; /* For animation */
+
+  /* Animation */
+  animation: 
+    textGradientAnimation 5s ease infinite, /* Animated gradient */
+    fadeInUp 0.8s ease-out forwards; /* Fade in and slide up */
+  opacity: 0; /* Start hidden for fadeInUp */
+}
+
+.hero-subtitle {
+  font-size: 1.4rem; /* Slightly larger subtitle */
+  color: #d1d5db; /* A light gray, good for dark themes. Adjust if needed. */
+  margin-bottom: 2.5rem; /* More space before the button */
+  line-height: 1.6;
+  max-width: 700px; /* Constrain width for better readability */
+  margin-left: auto;
+  margin-right: auto;
+
+  /* Animation */
+  animation: fadeInUp 0.8s ease-out 0.3s forwards; /* Delay after title */
+  opacity: 0; /* Start hidden for fadeInUp */
+}
+
+.hero-cta-link {
+  display: inline-block; /* Allows transform and better spacing */
+  /* Animation */
+  animation: fadeInUp 0.8s ease-out 0.6s forwards; /* Delay after subtitle */
+  opacity: 0; /* Start hidden for fadeInUp */
+}
+
+.hero-cta-button {
+  padding: 0.9rem 2rem; /* Larger button */
+  font-size: 1.1rem;
+  font-weight: bold;
+  background-color: #ff8a00; /* A vibrant color */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 138, 0, 0.4); /* Subtle glow */
+}
+
+.hero-cta-button:hover {
+  background-color: #e52e71; /* Change color on hover */
+  transform: translateY(-3px) scale(1.05); /* Lift and slightly enlarge */
+  box-shadow: 0 6px 20px rgba(229, 46, 113, 0.5);
+}
+
+/* Keyframes for animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes textGradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Ensure your theme styles don't overly conflict. 
+   For example, if your dark theme sets a very specific color for all h1,
+   you might need to make the .hero-title selector more specific or use !important (use sparingly).
+*/
+
+/* Example: If your dark theme does this:
+html.dark-theme h1 { color: #eee; } 
+You might need:
+html.dark-theme .hero-title { 
+  background: linear-gradient(90deg, #ff8a00, #e52e71, #6a0dad, #007cf0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+*/
