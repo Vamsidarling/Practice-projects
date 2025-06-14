@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react"; // Import useEffect and useRef
 import { userAuth } from "./AuthContext"; // Import userAuth to check user status
 import { useNavigate, Link } from "react-router-dom"; // Import useNavigate for redirection and Link for navigation
 
@@ -12,6 +12,16 @@ export default function GeneareteContent() {
   const [posts, setPosts] = useState([]); // To store generated posts
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const inputRef = useRef(null); // Create a ref for the input element
+
+  // useEffect to focus the input field when the component mounts
+  useEffect(() => {
+    // Check if the inputRef is attached and the user is logged in (content generation is available)
+    if (inputRef.current && user) {
+      inputRef.current.focus();
+    }
+  }, [user]); // Re-run if the user state changes (e.g., after login, if the component was already mounted)
+
 
   const Generate = async (e) => {
     e.preventDefault();
@@ -83,6 +93,7 @@ export default function GeneareteContent() {
     <div className="generate-content-container" id="generate-content-area">
       <input
         type="text"
+        ref={inputRef} // Attach the ref to the input element
         placeholder="What's your idea to generate the tweet "
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
@@ -94,9 +105,9 @@ export default function GeneareteContent() {
       {error && <p className="error-message">{error}</p>}
 
       <div className="posts-container">
-        {posts.length === 0 && !isLoading && !error && (
+        {/* {posts.length === 0 && !isLoading && !error && (
           <p className="no-posts-message">No content generated yet. Enter a prompt above to start!</p>
-        )}
+        )} */}
         {posts.map(post => (
           <div key={post.id} className="post-card">
             <p className="post-prompt"><strong>Prompt:</strong> {post.prompt}</p>
