@@ -5,8 +5,8 @@ import Layout from "./Layout";
 import { ProfileWrapper } from "./userprofile";
 import { userAuth } from "./AuthContext";
 import Home from "./Home";
-import Sidebar from "./SideBar";
-import GeneareteContent from "./GeneareteContent";
+// import Sidebar from "./SideBar";
+// import GeneareteContent from "./GeneareteContent";
 function PrivateRoute({ children }) {
   const { user } = userAuth();
   return user ? children : <Navigate to="/Home" />;

@@ -1,13 +1,16 @@
 {
-  "name": "route-practice",
+  "name": "Practice-projects",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://vamsidarling.github.io/Practice-projects",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
@@ -15,6 +18,10 @@
     "alias": "^0.0.5",
     "axios": "^1.9.0",
     "cors": "^2.8.5",
+    "gh": "^2.8.9",
+    "gh-pages": "^6.3.0",
+    "git": "^0.1.5",
+    "pages": "^0.0.16",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",
