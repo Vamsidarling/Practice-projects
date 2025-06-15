@@ -1,60 +1,101 @@
+import { useState } from "react";
+import { userAuth } from "./AuthContext";
+import { useNavigate, Navigate, Link } from "react-router-dom"; // Added Navigate and Link
+import { toast } from 'react-toastify'; // Added toast import
+// import './Profile.css'; // If you create Profile.css, uncomment this
+
 export function ProfileWrapper() {
   const { user, logout } = userAuth();
   const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState('view'); // 'view', 'edit', 'settings', 'security'
 
   const handleLogout = () => {
     logout();
     toast.success("You have been logged out.");
     navigate("/Home");
   };
-
+  // const handleSettings =() => 
+  // {
+  //   console.log("Settings");
+    
+    
+  //   <button>Twitter Account</button>
+  // }
   if (!user) {
-    return <Navigate to="/Signin" />;
+    // Use the Navigate component for declarative navigation
+    return <Navigate to="/Signin" replace />;
   }
+
   return (
     <div className="profile-page-container">
-      <div className="profile-preview-card-wrapper" style={{ marginBottom: '2rem' }}>
-        <PreviewCard delay={200} closeDelay={300} defaultOpen={false}>
-          <PreviewCardTrigger
-            render={
-              <button
-                className="profile-preview-trigger"
-                title={user.name || "User Profile"}
-              >
-                <span className="profile-icon-initials-page">
-                  {user.name ? user.name.charAt(0).toUpperCase() : 'P'}
-                </span>
-              </button>
-            }
-          />
-          <PreviewCardContent
-            side="bottom"
-            sideOffset={8}
-            align="end"
-            className="w-72 profile-preview-content-card"
+      {/* Sidebar */}
+      <aside className="profile-sidebar">
+        <h3>Profile Menu</h3>
+        <ul>
+          <li>
+            <button 
+              onClick={() => setActiveSection('view')} 
+              className={`sidebar-button ${activeSection === 'view' ? 'active' : ''}`}
+            >
+              View Profile
+            </button>
+          </li>
+          <li>
+            <button 
+              onClick={() => setActiveSection('edit')} 
+              className={`sidebar-button ${activeSection === 'edit' ? 'active' : ''}`}
+            >
+              Edit Profile
+            </button>
+          </li>
+          <li>
+            <button 
+               onClick={() => setActiveSection('settings')} 
+              className={`sidebar-button ${activeSection === 'settings' ? 'active' : ''}`}
+            >
+              Account Settings
+            </button>
+          </li>
+          <li>
+            <button 
+                onClick={() => setActiveSection('security')} 
+              className={`sidebar-button ${activeSection === 'security' ? 'active' : ''}`}
+            >
+              Security
+            </button>
+          </li>
+          <div className="sidebar-logout-section">
+          <button 
+            onClick={handleLogout} 
+            className="sidebar-button sidebar-logout-button" // Combined classes
           >
-            <div className="flex flex-col gap-3 p-4">
-              <div className="text-center">
-                <div className="font-semibold text-lg">{user.name}</div>
-                <div className="text-sm text-muted-foreground">{user.email}</div>
-              </div>
-              <hr className="my-2" />
-              <button
-                onClick={handleLogout}
-                className="preview-card-logout-button"
-              >
-                Logout
-              </button>
-            </div>
-          </PreviewCardContent>
-        </PreviewCard>
-      </div>
+            Logout
+          </button>
+        </div>
+        </ul>
+        
+      </aside>
 
-      <h2 style={{clear: 'both'}}>Welcome to your Profile, {user.name}!</h2>
-      <p style={{marginTop: '1rem'}}>
-        This is where more detailed user profile information and settings would
-        go.
-      </p>
+      {/* Main Content Area */}
+      <main className="profile-main-content">
+        {activeSection === 'view' && (
+          <div className="profile-section-card">
+            <h2>Welcome, {user.name}!</h2>
+            <p><strong>Email:</strong> {user.email}</p>
+            {/* You can add more user details here from the user object if available */}
+            <p className="text-muted">This is your profile overview. Select an option from the sidebar to manage your account.</p>
+          </div>
+        )}
+        {activeSection === 'edit' && (
+          <div className="profile-section-card"><h2>Edit Profile</h2><p>Here you can create a form to update your name, email (if allowed), bio, profile picture, etc.</p></div>
+        )}
+        {activeSection === 'settings' && (
+          <div className="profile-section-card"><h2>Account Settings</h2><p>Manage your notification preferences, theme settings (if applicable locally to profile), or other application-specific settings.</p></div>
+        )}
+        {activeSection === 'security' && (
+          <div className="profile-section-card"><h2>Security</h2><p>Options to change your password, manage two-factor authentication, or view active sessions.</p></div>
+        )}
+      </main>
     </div>
   );
 }

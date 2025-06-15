@@ -2,7 +2,13 @@
 /* Dark theme by default */
 :root {
   color-scheme: dark;
-  
+  --text-color: #d1d5db;       /* Light text for dark theme */
+  --text-color-strong: #ffffff; /* Bolder light text for dark theme */
+  --text-color-muted: #8c939d;  /* Muted light text for dark theme */
+  --border-color: #495057;     /* Darker border for dark theme */
+  --sidebar-bg: #2c3034;       /* Darker sidebar for dark theme */
+  /* --card-bg: #25292d;    /* Used if cards are not transparent */
+  --primary-color: #0d6efd; 
   /* Dark theme colors */
   --color-bg: #121212;
   --color-bg-secondary: #1e1e1e;
@@ -16,20 +22,20 @@
   --color-primary-accent-hover: #4da6ff;
   --color-primary-accent-text: #ffffff;
   --hero-text: #f0f0f0;
-  
+
   /* Shadows */
   --color-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
   --color-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
     0 2px 4px -1px rgba(0, 0, 0, 0.2);
   --color-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3),
     0 4px 6px -2px rgba(0, 0, 0, 0.2);
-    
+
   /* Form elements */
   --color-input-bg: #1e1e1e;
   --color-input-border: #383838;
   --color-input-focus-border: #1e90ff;
   --color-input-focus-shadow: 0 0 0 3px rgba(30, 144, 255, 0.3);
-  
+
   /* Links */
   --color-link: #1e90ff;
   --color-link-hover: #4da6ff;
@@ -86,8 +92,8 @@
 }
 
 /* Dark theme styles */
-[data-theme='dark'],
-[data-theme='dark'] body {
+[data-theme="dark"],
+[data-theme="dark"] body {
   /* Dark Theme Overrides */
   --color-bg: #121212; /* Dark, but not pure black for better depth */
   --color-bg-secondary: #1e1e1e;
@@ -396,7 +402,10 @@ label {
 
 .app-sidebar {
   width: 260px; /* ChatGPT-like width */
-  background-color: var(--color-background-sidebar, #202123); /* Dark background like ChatGPT */
+  background-color: var(
+    --color-background-sidebar,
+    #202123
+  ); /* Dark background like ChatGPT */
   color: var(--color-text-sidebar, #ececf1);
   display: flex;
   flex-direction: column;
@@ -414,7 +423,7 @@ label {
   padding: 0.65rem 0.75rem;
   background-color: transparent;
   color: var(--color-text-sidebar, #ececf1);
-  border: 1px solid var(--color-border-button-sidebar, #56585A);
+  border: 1px solid var(--color-border-button-sidebar, #56585a);
   border-radius: 0.375rem;
   text-align: left;
   font-size: 0.875rem;
@@ -423,7 +432,7 @@ label {
 }
 
 .new-generation-button:hover {
-  background-color: var(--color-background-button-sidebar-hover, #2A2B2D);
+  background-color: var(--color-background-button-sidebar-hover, #2a2b2d);
 }
 
 .sidebar-history {
@@ -467,7 +476,7 @@ label {
 }
 
 .history-item-button:hover {
-  background-color: var(--color-background-item-sidebar-hover, #2A2B2D);
+  background-color: var(--color-background-item-sidebar-hover, #2a2b2d);
 }
 
 .no-history-message {
@@ -495,7 +504,9 @@ label {
   flex-grow: 1;
   overflow-y: auto; /* Allow main content area to scroll */
   padding: 1.5rem 2rem; /* Or your existing padding */
-  background-color: var(--color-background); /* Ensure main content has a background */
+  background-color: var(
+    --color-background
+  ); /* Ensure main content has a background */
 }
 /* s:\Cloned Projects\Practice-projects\route practice\src\index.css */
 
@@ -534,7 +545,6 @@ label {
   border-right: none;
 }
 
-
 /* Main Content Wrapper */
 .main-content-wrapper {
   flex-grow: 1;
@@ -566,7 +576,7 @@ label {
   padding: 0.75rem 1.5rem;
   background-color: var(--color-background-nav);
   color: var(--color-text);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
 }
 
@@ -593,7 +603,8 @@ label {
 /* ... rest of your .app-sidebar, .sidebar-header, .new-generation-button, etc. styles ... */
 /* Ensure they don't rely on the sidebar always being a fixed width if you use the width:0 approach */
 
-.sidebar-header, .sidebar-history {
+.sidebar-header,
+.sidebar-history {
   /* Ensure these are hidden properly when sidebar width is 0 */
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
@@ -671,8 +682,11 @@ label {
 .header-profile-dropdown {
   position: absolute;
   top: 100%; /* Position below the trigger button */
-  right: 0;  /* Align to the right edge of its container (.profile-menu-widget-container) */
-  background-color: var(--color-background-card, #ffffff); /* Use card background or a specific dropdown bg */
+  right: 0; /* Align to the right edge of its container (.profile-menu-widget-container) */
+  background-color: var(
+    --color-background-card,
+    #ffffff
+  ); /* Use card background or a specific dropdown bg */
   border: 1px solid var(--color-border, #e0e0e0);
   border-radius: 0.375rem; /* Consistent border radius */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* A slightly more pronounced shadow */
@@ -701,12 +715,18 @@ label {
 
 .profile-dropdown-menu-on-page .dropdown-item:hover {
   background-color: var(--color-background-hover, #f5f5f5);
-  color: var(--color-text-hover, var(--color-primary-accent)); /* Optional: change text color on hover */
+  color: var(
+    --color-text-hover,
+    var(--color-primary-accent)
+  ); /* Optional: change text color on hover */
 }
 
 /* Specific styling for the user greeting item within the header dropdown */
 .header-profile-dropdown .user-greeting-item {
-  color: var(--color-text-muted, #555555); /* Slightly muted color for "Signed in as" */
+  color: var(
+    --color-text-muted,
+    #555555
+  ); /* Slightly muted color for "Signed in as" */
   padding-bottom: 0.75rem; /* Space below the greeting text */
   margin-bottom: 0.5rem; /* Space before the next item (e.g., Logout button) */
   border-bottom: 1px solid var(--color-border, #e0e0e0); /* Separator line */
@@ -734,7 +754,10 @@ label {
 
 .header-profile-dropdown .logout-item:hover {
   background-color: var(--color-danger-hover, #c82333);
-  color: var(--color-primary-accent-text, #ffffff); /* Text color on danger hover */
+  color: var(
+    --color-primary-accent-text,
+    #ffffff
+  ); /* Text color on danger hover */
 }
 
 /* Ensure the trigger button in the header is styled appropriately */
@@ -767,7 +790,10 @@ label {
 
 /* Styles for the profile dropdown trigger button in the HEADER */
 .header-profile-trigger {
-  background-color: var(--color-primary-accent, #007bff); /* Example background */
+  background-color: var(
+    --color-primary-accent,
+    #007bff
+  ); /* Example background */
   color: var(--color-primary-accent-text, #ffffff);
   border: none;
   border-radius: 50%; /* Makes it round */
@@ -785,7 +811,10 @@ label {
 }
 
 .header-profile-trigger:hover {
-  background-color: var(--color-primary-accent-hover, #0056b3); /* Darken on hover */
+  background-color: var(
+    --color-primary-accent-hover,
+    #0056b3
+  ); /* Darken on hover */
 }
 
 .header-profile-trigger .profile-icon-initials {
@@ -811,7 +840,6 @@ label {
   transform: rotate(180deg); /* Flips arrow up when menu is open */
 }
 
-
 /* Ensure the container for the dropdown trigger in the header has relative positioning */
 .app-header nav .profile-menu-widget-container {
   position: relative;
@@ -823,7 +851,9 @@ label {
 /* Styles for the dropdown menu itself (ensure z-index is high) */
 .header-profile-dropdown {
   position: absolute;
-  top: calc(100% + 8px); /* Position below the trigger button with a small gap */
+  top: calc(
+    100% + 8px
+  ); /* Position below the trigger button with a small gap */
   right: 0;
   background-color: var(--color-background-card, #ffffff);
   border: 1px solid var(--color-border, #e0e0e0);
@@ -867,13 +897,16 @@ label {
 
 /* Styles for the profile trigger button ON THE PROFILE PAGE */
 .profile-preview-trigger {
-  background-color: var(--color-primary-accent, #007bff); /* Or a more neutral color if preferred */
+  background-color: var(
+    --color-primary-accent,
+    #007bff
+  ); /* Or a more neutral color if preferred */
   color: var(--color-primary-accent-text, #ffffff); /* Color of the initial */
   border: none;
   border-radius: 50%; /* Makes it round */
-  width: 36px;   /* Smaller, more icon-like size */
-  height: 36px;  /* Smaller, more icon-like size */
-  padding: 0;    /* Remove padding to let content center precisely */
+  width: 36px; /* Smaller, more icon-like size */
+  height: 36px; /* Smaller, more icon-like size */
+  padding: 0; /* Remove padding to let content center precisely */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -886,14 +919,18 @@ label {
 }
 
 .profile-preview-trigger:hover {
-  background-color: var(--color-primary-accent-hover, #0056b3); /* Darken on hover */
+  background-color: var(
+    --color-primary-accent-hover,
+    #0056b3
+  ); /* Darken on hover */
   /* Optional: Slightly larger shadow on hover */
   /* box-shadow: 0 2px 5px rgba(0,0,0,0.15); */
 }
 
 .profile-preview-trigger:focus {
   outline: none; /* Remove default outline if you add a custom one */
-  box-shadow: 0 0 0 2px var(--color-background, #000000), 0 0 0 4px var(--color-primary-accent, #007bff); /* Google-like focus ring */
+  box-shadow: 0 0 0 2px var(--color-background, #000000),
+    0 0 0 4px var(--color-primary-accent, #007bff); /* Google-like focus ring */
 }
 
 .profile-icon-initials-page {
@@ -904,7 +941,8 @@ label {
 }
 
 /* Styles for the PreviewCardContent itself (the card that opens) */
-.profile-preview-content-card { /* This class is on PreviewCardContent in userprofile.jsx */
+.profile-preview-content-card {
+  /* This class is on PreviewCardContent in userprofile.jsx */
   background-color: var(--color-background-card, #fff);
   border: 1px solid var(--color-border, #ececec);
   border-radius: 0.5rem; /* A slightly larger radius for the card */
@@ -929,27 +967,55 @@ label {
 }
 
 .preview-card-logout-button:hover {
-  background-color: var(--color-danger-hover-bg, rgba(0, 0, 0, 0.1)); /* Subtle background on hover */
-  color: var(--color-danger-hover-text, var(--color-danger)); /* Keep text color or slightly darken */
+  background-color: var(
+    --color-danger-hover-bg,
+    rgba(0, 0, 0, 0.1)
+  ); /* Subtle background on hover */
+  color: var(
+    --color-danger-hover-text,
+    var(--color-danger)
+  ); /* Keep text color or slightly darken */
 }
 
 /* If you're using Tailwind classes like 'text-muted-foreground' from the example,
    ensure your Tailwind config or global CSS defines what these mean, or replace them
    with your own theme variables. Example: */
-.text-muted-foreground { /* This is a Tailwind class, provide your equivalent */
+.text-muted-foreground {
+  /* This is a Tailwind class, provide your equivalent */
   color: var(--color-text-muted, #6c757d);
 }
-.font-semibold { font-weight: 600; }
-.text-lg { font-size: 1.125rem; }
-.text-sm { font-size: 0.875rem; }
-.text-center { text-align: center; }
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.gap-3 { gap: 0.75rem; }
-.p-4 { padding: 1rem; }
-.my-2 { margin-top: 0.5rem; margin-bottom: 0.5rem; }
-hr.my-2 { border-top-width: 1px; border-color: var(--color-border); }
-
+.font-semibold {
+  font-weight: 600;
+}
+.text-lg {
+  font-size: 1.125rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+}
+.text-center {
+  text-align: center;
+}
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
+}
+.gap-3 {
+  gap: 0.75rem;
+}
+.p-4 {
+  padding: 1rem;
+}
+.my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+hr.my-2 {
+  border-top-width: 1px;
+  border-color: var(--color-border);
+}
 
 /* Your existing .header-profile-trigger styles should mostly work */
 /* .header-profile-trigger { ... } */
@@ -966,18 +1032,41 @@ hr.my-2 { border-top-width: 1px; border-color: var(--color-border); }
 }
 
 /* If not using Tailwind, define these or apply styles directly */
-.header-profile-preview-content-card .flex { display: flex; }
-.header-profile-preview-content-card .flex-col { flex-direction: column; }
-.header-profile-preview-content-card .gap-3 { gap: 0.75rem; }
-.header-profile-preview-content-card .p-4 { padding: 1rem; }
-.header-profile-preview-content-card .text-center { text-align: center; }
-.header-profile-preview-content-card .font-semibold { font-weight: 600; }
-.header-profile-preview-content-card .text-lg { font-size: 1.125rem; }
-.header-profile-preview-content-card .text-sm { font-size: 0.875rem; }
-.header-profile-preview-content-card .text-muted-foreground { color: var(--color-text-muted, #6c757d); }
-.header-profile-preview-content-card .my-2 { margin-top: 0.5rem; margin-bottom: 0.5rem; }
-.header-profile-preview-content-card hr { border-top-width: 1px; border-color: var(--color-border); }
-
+.header-profile-preview-content-card .flex {
+  display: flex;
+}
+.header-profile-preview-content-card .flex-col {
+  flex-direction: column;
+}
+.header-profile-preview-content-card .gap-3 {
+  gap: 0.75rem;
+}
+.header-profile-preview-content-card .p-4 {
+  padding: 1rem;
+}
+.header-profile-preview-content-card .text-center {
+  text-align: center;
+}
+.header-profile-preview-content-card .font-semibold {
+  font-weight: 600;
+}
+.header-profile-preview-content-card .text-lg {
+  font-size: 1.125rem;
+}
+.header-profile-preview-content-card .text-sm {
+  font-size: 0.875rem;
+}
+.header-profile-preview-content-card .text-muted-foreground {
+  color: var(--color-text-muted, #6c757d);
+}
+.header-profile-preview-content-card .my-2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.header-profile-preview-content-card hr {
+  border-top-width: 1px;
+  border-color: var(--color-border);
+}
 
 .preview-card-logout-button {
   width: 100%;
@@ -993,7 +1082,10 @@ hr.my-2 { border-top-width: 1px; border-color: var(--color-border); }
 }
 
 .preview-card-logout-button:hover {
-  background-color: var(--color-danger-hover-bg, var(--color-danger)); /* Use a specific var or fallback */
+  background-color: var(
+    --color-danger-hover-bg,
+    var(--color-danger)
+  ); /* Use a specific var or fallback */
   color: var(--color-danger-hover-text, #fff);
   border-color: var(--color-danger-hover-bg, var(--color-danger));
 }
@@ -1030,21 +1122,164 @@ hr.my-2 { border-top-width: 1px; border-color: var(--color-border); }
   color: var(--color-primary-accent-text, #ffffff);
 }
 
+/* === Profile Page Styles === */
+
+.profile-page-container {
+  display: flex;
+  /* Adjust 70px if your header height is different or managed dynamically */
+  min-height: calc(100vh - 70px);
+  /* background-color: var(--background-color, #fff);  */
+  /* background-color: transparent; */
+  /* background-color: var(--background-color, #fff); */
+   /* Main page background */
+  color: var(--text-color, #ddd2d2); /* Default text color for the profile page */
+  /* font-variant-caps: all-petite-caps; */
+  /* Main page background */
+}
+
+.profile-sidebar {
+  width: 250px;
+  flex-shrink: 0; /* Prevents sidebar from shrinking if content is too wide */
+  /* border-right: 1px solid var(--border-color, #e0e0e0); */
+  padding: 1.5rem 1rem;
+  /* background-color: var(--sidebar-bg, #f8f9fa); */
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  font-weight: 600%;
+  box-sizing: border-box;
+}
+
+.profile-sidebar h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+  color: var(--text-color-strong, #333);
+}
+
+.profile-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1; /* Pushes the logout section to the bottom */
+}
+
+.profile-sidebar li {
+  margin-bottom: 0.5rem;
+  background-color: rgb(42, 55, 70);
+}
+
+.sidebar-button {
+  background-origin: var(--color-bg);
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  background-color: transparent;
+  border: 1px solid transparent; /* Maintain layout even without visible border */
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--text-color, #333);
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
+}
+
+.sidebar-button:hover {
+  background-color: var(--hover-bg-color, #4c4a49);
+  border-color: var(--hover-border-color, #256eb7);
+}
+
+.sidebar-button.active {
+  cursor: default;
+  background-color: var(--primary-color, #1c4063);
+  color: var(--primary-contrast-text, rgb(248, 248, 248));
+  font-weight: bold;
+  border-color: var(--primary-color, #007bff);
+}
+
+.sidebar-logout-section {
+  margin-top: auto; /* Pushes this to the bottom of the flex container */
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color, #e0e0e0);
+}
+
+.sidebar-logout-button {
+  /* Inherits .sidebar-button styles, then overrides */
+  background-color: var(--danger-color, #dc3545);
+  color: var(--danger-contrast-text, white);
+  font-weight: bold;
+  border-color: var(--danger-color, #dc3545);
+}
+
+.sidebar-logout-button:hover {
+  background-color: var(
+    --danger-hover-color,
+    #c82333
+  ); /* Darker shade for hover */
+  border-color: var(--danger-hover-color, #c82333);
+}
+
+.profile-main-content {
+  flex-grow: 1;
+  padding: 1.5rem 2rem;
+  overflow-y: auto; /* Allows content to scroll if it exceeds viewport height */
+  box-sizing: border-box;
+  /* background-color: transparent; */
+}
+
+.profile-section-card {
+  /* background-color: var(--card-bg, #ffffff); */
+  /* background-color: #000000;
+back */
+  background-color: transparent;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(215, 14, 14, 0.05);
+  /* Add margin if multiple cards might be stacked or for spacing */
+  /* margin-bottom: 1.5rem; */
+}
+
+.profile-section-card h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+  color: var(--text-color-strong, #212529);
+}
+
+.profile-section-card p {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+  color: var(--text-color, #495057);
+}
+
+.profile-section-card p strong {
+  color: var(--text-color-strong, #343a40);
+}
+
+.profile-section-card p:last-child {
+  margin-bottom: 0;
+}
+
+/* Utility class for muted text, if needed */
+.text-muted {
+  color: var(--text-color-muted, #6c757d);
+}
 
 /* ... rest of your styles ... */
-
 
 /* Ensure the container for the dropdown trigger in the header has relative positioning */
 .app-header nav .profile-menu-widget-container {
   position: relative; /* This is crucial for the absolute positioning of the dropdown */
   margin-left: 0.75rem; /* Example spacing */
+  
 }
 
 /* ... rest of your styles ... */
 
 .header-profile-trigger:hover {
   /* background-color: var(--color-background-hover);  */
-  background-color: transparent;/* Example hover */
+  background-color: transparent; /* Example hover */
 }
 
 /* The .profile-dropdown-menu-on-page might need slight adjustments
@@ -1054,6 +1289,8 @@ hr.my-2 { border-top-width: 1px; border-color: var(--color-border); }
 .header-profile-dropdown {
   /* Example: ensure it's above the sidebar if sidebar is also sticky/fixed */
   z-index: 1051;
+  margin-top: 50%;
+  background-color: transparent;
 }
 
 .profile-dropdown-menu-on-page .user-greeting-item {
@@ -1072,7 +1309,6 @@ hr.my-2 { border-top-width: 1px; border-color: var(--color-border); }
   opacity: 0;
 }
 
-
 /* Define color variables (example for a dark theme sidebar) */
 /* :root {
   --color-background-sidebar: #202123;
@@ -1089,7 +1325,7 @@ hr.my-2 { border-top-width: 1px; border-color: var(--color-border); }
   align-self: flex-start;
   padding: 0.75rem 1.5rem; /* 12px 24px */
   font-size: 1rem; /* 16px */
-  margin-bottom: 0;  
+  margin-bottom: 0;
   /* background-color: var(--color-bg-secondary); */
   line-height: 1.6;
 }
@@ -1147,7 +1383,6 @@ hr.my-2 { border-top-width: 1px; border-color: var(--color-border); }
 
 /* -------------------------------------------------------------------------- */
 
-
 /* --- Error and Loading Messages --- */
 .error-message {
   color: #ef4444; /* Tailwind's red-500 */
@@ -1181,7 +1416,9 @@ body.dark-theme .error-message {
 }
 
 .post-card {
-  background-color: var(--color-bg); /* Slightly different from container bg for definition */
+  background-color: var(
+    --color-bg
+  ); /* Slightly different from container bg for definition */
   border: 1px solid var(--color-border);
   border-radius: 0.5rem; /* 8px */
   padding: 1.25rem 1.5rem; /* 20px 24px */
@@ -1344,7 +1581,6 @@ body.dark-theme .hero-title {
   .generate-content-container {
     margin: 1.5rem 1rem;
     padding: 1.5rem;
-   
   }
   .generate-content-container input[type="text"] {
     font-size: 1rem;
@@ -1390,7 +1626,7 @@ body.dark-theme .hero-title {
   font-weight: bold;
   margin-bottom: 1rem;
   color: var(--hero-text, #111827); /* Default dark color for hero text */
-  
+
   /* Gradient text effect */
   background: linear-gradient(90deg, #ff8a00, #e52e71, #6a0dad, #007cf0);
   -webkit-background-clip: text;
@@ -1400,9 +1636,8 @@ body.dark-theme .hero-title {
   background-size: 300% 300%; /* For animation */
 
   /* Animation */
-  animation: 
-    textGradientAnimation 5s ease infinite, /* Animated gradient */
-    fadeInUp 0.8s ease-out forwards; /* Fade in and slide up */
+  animation: textGradientAnimation 5s ease infinite,
+    /* Animated gradient */ fadeInUp 0.8s ease-out forwards; /* Fade in and slide up */
   opacity: 0; /* Start hidden for fadeInUp */
 }
 
@@ -1459,9 +1694,15 @@ body.dark-theme .hero-title {
 }
 
 @keyframes textGradientAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Ensure your theme styles don't overly conflict. 

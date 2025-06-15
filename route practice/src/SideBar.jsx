@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom'; // For navigation links
 import { userAuth } from './AuthContext'; // To check if user is logged in
 import axios from 'axios'; // To make API calls
-import { toast } from 'react-toastify'; // Import toast
+import { toast } from 'react-toastify'; // Import toast 
 
 export default function Sidebar({ onNewGeneration, onLoadHistory }) { // Added onLoadHistory prop
   const { user } = userAuth();
@@ -65,7 +65,7 @@ export default function Sidebar({ onNewGeneration, onLoadHistory }) { // Added o
           {!isLoadingHistory && !historyError && historyItems.length === 0 && (
             <li className="no-history-message">No history yet.</li>
           )}
-          {!isLoadingHistory && !historyError && historyItems.map((item) => {
+          {!isLoadingHistory && !historyError && [...historyItems].reverse().map((item) => {
             // Truncate the question for display if it's too long
             const displayQuestion = item.question.length > 30 
               ? item.question.substring(0, 30) + "..." 

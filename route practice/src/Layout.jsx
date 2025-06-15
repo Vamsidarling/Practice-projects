@@ -61,7 +61,10 @@ export default function Layout() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+const ViewProfile = () => {
+  navigate("/Profile"); // Navigate to Profile page
+  setIsProfileDropdownOpen(false); // Close the dropdown
+}
   return (
     <>
       <ToastContainer
@@ -114,8 +117,9 @@ export default function Layout() {
                 {isProfileDropdownOpen && (
                   <div className="profile-dropdown-menu-on-page header-profile-dropdown" id="header-profile-options-menu" role="menu">
                     <div className="dropdown-item user-greeting-item" role="menuitem">
-                      Signed in as <br />
-                      <strong>{user.email}</strong>
+                      Signed in as in teh <br />
+                      <strong>{user.name}</strong>
+                      <button onClick={ViewProfile}>View Profile Page</button>
                     </div>
                     {/* <Link to="/" className="dropdown-item" role="menuitem" onClick={() => setIsProfileDropdownOpen(false)}>View Profile Page</Link> */}
                     <button onClick={handleLogout} className="dropdown-item logout-item" role="menuitem">
