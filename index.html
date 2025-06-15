@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        try {
+          const theme = localStorage.getItem('app-theme') || 'dark'; // Default to dark
+          // Remove any pre-existing theme classes to ensure a clean slate
+          document.documentElement.classList.remove('light-theme', 'dark-theme');
+          document.documentElement.classList.add(theme + '-theme');
+        } catch (e) {
+          console.error('Error applying initial theme from inline script:', e);
+        }
+      })();
+    </script>
+    <title>Vite + React</title>
+    <script type="module" crossorigin src="/assets/index-C6ADJ4as.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CZ0sYO_Y.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
