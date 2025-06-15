@@ -1,18 +1,28 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/Practice-projects/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
-      (function() {
+      (function () {
         try {
-          const theme = localStorage.getItem('app-theme') || 'dark'; // Default to dark
+          (function () {
+            const redirect = sessionStorage.redirect;
+            delete sessionStorage.redirect;
+            if (redirect && redirect !== location.href) {
+              history.replaceState(null, null, redirect);
+            }
+          })();
+          const theme = localStorage.getItem("app-theme") || "dark"; // Default to dark
           // Remove any pre-existing theme classes to ensure a clean slate
-          document.documentElement.classList.remove('light-theme', 'dark-theme');
-          document.documentElement.classList.add(theme + '-theme');
+          document.documentElement.classList.remove(
+            "light-theme",
+            "dark-theme"
+          );
+          document.documentElement.classList.add(theme + "-theme");
         } catch (e) {
-          console.error('Error applying initial theme from inline script:', e);
+          console.error("Error applying initial theme from inline script:", e);
         }
       })();
     </script>
