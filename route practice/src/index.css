@@ -2,7 +2,7 @@
 /* Dark theme by default */
 :root {
   color-scheme: dark;
-  --text-color: #d1d5db;       /* Light text for dark theme */
+  --text-color: #e2e7ef;       /* Light text for dark theme */
   --text-color-strong: #ffffff; /* Bolder light text for dark theme */
   --text-color-muted: #8c939d;  /* Muted light text for dark theme */
   --border-color: #495057;     /* Darker border for dark theme */
@@ -10,7 +10,8 @@
   /* --card-bg: #25292d;    /* Used if cards are not transparent */
   --primary-color: #0d6efd; 
   /* Dark theme colors */
-  --color-bg: #121212;
+  /* --color-bg: #000000; */
+  --background-color: rgb(10, 10, 10);
   --color-bg-secondary: #1e1e1e;
   --color-bg-tertiary: #2a2a2a;
   --color-text-primary: #e0e0e0;
@@ -95,10 +96,10 @@
 [data-theme="dark"],
 [data-theme="dark"] body {
   /* Dark Theme Overrides */
-  --color-bg: #121212; /* Dark, but not pure black for better depth */
+  --color-bg: #000000; /* Dark, but not pure black for better depth */
   --color-bg-secondary: #1e1e1e;
   --color-bg-tertiary: #2a2a2a;
-  --color-text-primary: #e0e0e0; /* Off-white, easier on the eyes */
+  --color-text-primary: #fffffffa; /* Off-white, easier on the eyes */
   --color-text-secondary: #a0a0a0; /* Lighter gray for secondary text */
   --color-text-muted: #757575;
   --color-border: #333333;

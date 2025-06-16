@@ -5,6 +5,8 @@ import Layout from "./Layout";
 import { ProfileWrapper } from "./userprofile";
 import { userAuth } from "./AuthContext";
 import Home from "./Home";
+import { HashRouter as Router } from "react-router-dom";
+<Router basename="/Practice-projects"></Router>
 // import Sidebar from "./SideBar";
 // import GeneareteContent from "./GeneareteContent";
 function PrivateRoute({ children }) {

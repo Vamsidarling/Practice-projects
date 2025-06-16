@@ -37,10 +37,10 @@
 
 // // Show content after initial render to prevent flash
 // document.documentElement.style.visibility = 'visible';
-const isProduction = import.meta.env.MODE === "production";
-const basename = isProduction ? "/Practice-projects" : "";
+// const isProduction = import.meta.env.MODE === "production";
+// const basename = isProduction ? "/Practice-projects" : "";
 import { createRoot } from "react-dom/client";
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter, HashRouter } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
 import { ThemeProvider } from "./ThemeProvider";
 import App from "./App.jsx";
@@ -67,7 +67,8 @@ const root = createRoot(document.getElementById("root"));
 
 root.render(
   // basename="/Practice-projects"
-  <HashRouter basename={basename }>
+//  <HashRouter basename={window.location.hostname === "vamsidarling.github.io" ? "/Practice-projects" : ""}>
+     <HashRouter basename= "/"> {/* Or <HashRouter basename="/"> */}
     <ThemeProvider>
       <AuthProvider>
         <App />

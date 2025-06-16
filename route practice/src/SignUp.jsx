@@ -22,7 +22,8 @@ export default function SignUp() {
                 password,
                 fname,
                 lname,
-            });
+                
+            }, { withCredentials: true });
             // login({ name, email }); // Consider if user should log in automatically or go to signin page
             toast.success("Sign up successful! Please sign in."); // Inform user to sign in
             navigate("/signin");
