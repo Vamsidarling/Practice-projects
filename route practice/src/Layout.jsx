@@ -96,8 +96,11 @@ const ViewProfile = () => {
               {/* Add margin to brand link if toggle button is present */}
               <h1>Social Media</h1>
             </Link>
+            
           </div>
+          
           <nav>
+             <button>Twitter Account</button>
             {user ? (
               <div className="profile-menu-widget-container" ref={profileDropdownRef}>
                 <button
@@ -116,7 +119,7 @@ const ViewProfile = () => {
                 {isProfileDropdownOpen && (
                   <div className="profile-dropdown-menu-on-page header-profile-dropdown" id="header-profile-options-menu" role="menu">
                     <div className="dropdown-item user-greeting-item" role="menuitem">
-                      Signed in as in teh <br />
+                      Signed in as in the <br />
                       <strong>{user.name}</strong>
                       <button onClick={ViewProfile}>View Profile Page</button>
                     </div>

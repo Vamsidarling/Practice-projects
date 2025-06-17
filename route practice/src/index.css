@@ -350,11 +350,10 @@ label {
   margin: 3rem auto; /* More top/bottom margin */
   padding: 2.5rem; /* More padding */
   /* background-color: var(--color-bg-secondary); */
-  /* background-color: transparent; */
+  background-color: transparent;
   border-radius: 0.5rem; /* 8px */
   box-shadow: var(--color-shadow-md);
-  box-shadow: rgb(255, 255, 255);
-  border: white;
+  box-shadow: white;
 }
 .auth-form-container h1 {
   text-align: center;
@@ -615,6 +614,7 @@ label {
 }
 /* In your index.css */
 .profile-menu-widget-container {
+  margin-top: 10px;
   position: relative;
   display: inline-block; /* Or block if it should take full width */
   margin-bottom: 1rem; /* Space below the dropdown widget */
