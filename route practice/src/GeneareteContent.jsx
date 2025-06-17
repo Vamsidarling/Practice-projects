@@ -1,7 +1,7 @@
 import axios from "axios";
-import { useState, useEffect, useRef } from "react"; // Import useEffect and useRef
+import { useState, useEffect, useRef } from "react";
 import { userAuth } from "./AuthContext";
-import { useNavigate, Link, useOutletContext } from "react-router-dom"; // Import useOutletContext
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { toast } from 'react-toastify';
 
 const DEFAULT_NO_CONTENT_MESSAGE = "No content generated. (Default Fallback)";
@@ -130,7 +130,7 @@ export default function GeneareteContent() {
         }
       }
 
-      setQuestion(""); // Clear the input field
+      // setQuestion(""); // Clear the input field
     } catch (err) {
       console.error("Error generating content:", err);
       const errorMessage = err.response?.data?.message || "Failed to generate content. Please try again.";
@@ -156,9 +156,6 @@ export default function GeneareteContent() {
       {error && <p className="error-message">{error}</p>}
 
       <div className="posts-container">
-        {/* {posts.length === 0 && !isLoading && !error && (
-          <p className="no-posts-message">No content generated yet. Enter a prompt above to start!</p>
-        )} */}
         {posts.map(post => (
           <div key={post.id} className="post-card">
             <p className="post-prompt"><strong>Prompt:</strong> {post.prompt}</p>

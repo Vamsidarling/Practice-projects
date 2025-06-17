@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { userAuth } from "./AuthContext";
 import { useNavigate ,Link} from "react-router-dom";
@@ -9,6 +9,14 @@ export default function Signin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const emailInputRef = useRef(null); // Create a ref for the email input
+
+  useEffect(() => {
+    // Focus the email input field when the component mounts
+    if (emailInputRef.current) {
+      emailInputRef.current.focus();
+    }
+  }, []); // Empty dependency array ensures this runs only once on mount
 
   async function handleSignin(e) {
     e.preventDefault();
@@ -38,6 +46,7 @@ export default function Signin() {
       <form onSubmit={handleSignin}>
         <input
           type="email"
+          ref={emailInputRef} // Attach the ref here
           placeholder="Enter your Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}

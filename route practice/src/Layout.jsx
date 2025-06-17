@@ -13,20 +13,19 @@ export default function Layout() {
   const [newSessionKey, setNewSessionKey] = useState(Date.now()); // Key to trigger new session in GeneareteContent
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const profileDropdownRef = useRef(null);
+  const [trighistory,settrighistory] = useState(Date.now)
 
   const handleNewGenerationSession = () => {
     console.log("Layout: Start new generation session");
     setSelectedHistoryItem(null); // Clear any selected history
     setNewSessionKey(Date.now()); // Update the key to trigger a new session
-
-    // Clear selected history when starting a new session
     toast.info("New generation session started!");
-    // This could navigate to a specific route or reset state in GeneareteContent
-    // For example, if GeneareteContent clears its state based on a prop or context:
-    navigate('/Home'); // Assuming Home shows GeneareteContent
-    // You might need a more sophisticated way to signal GeneareteContent to reset.
+       navigate('/Home'); // 
+   
   };
-
+  const trighistorykey =() => {
+    settrighistory(Date.now())
+  };
   const handleLoadHistoryItem = (historyItem) => {
     console.log("Layout: Loading history item", historyItem);
     setSelectedHistoryItem(historyItem);
@@ -144,7 +143,9 @@ const ViewProfile = () => {
           <Outlet context={{ 
             selectedHistoryItem, 
             clearSelectedHistory: () => setSelectedHistoryItem(null),
-            newSessionKey // Pass the new session key
+            newSessionKey ,
+            trighistorykey
+            // Pass the new session key
           }} />
         </main>
       </div>

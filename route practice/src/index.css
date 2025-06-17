@@ -349,9 +349,12 @@ label {
   max-width: 450px;
   margin: 3rem auto; /* More top/bottom margin */
   padding: 2.5rem; /* More padding */
-  background-color: var(--color-bg-secondary);
+  /* background-color: var(--color-bg-secondary); */
+  /* background-color: transparent; */
   border-radius: 0.5rem; /* 8px */
   box-shadow: var(--color-shadow-md);
+  box-shadow: rgb(255, 255, 255);
+  border: white;
 }
 .auth-form-container h1 {
   text-align: center;

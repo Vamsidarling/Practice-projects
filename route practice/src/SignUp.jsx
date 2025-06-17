@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { userAuth } from "./AuthContext";
 import { useNavigate,Link } from "react-router-dom";
@@ -12,6 +12,14 @@ export default function SignUp() {
     const [password, setPassword] = useState("");
     const [fname, setFname] = useState("");
     const [lname, setLname] = useState("");
+    const nameInputRef = useRef(null); // Create a ref for the first input (name)
+
+    useEffect(() => {
+        // Focus the name input field when the component mounts
+        if (nameInputRef.current) {
+            nameInputRef.current.focus();
+        }
+    }, []); // Empty dependency array ensures this runs only once on mount
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -37,10 +45,11 @@ export default function SignUp() {
     return (
         <div className="auth-form-container"> {/* Optional: for centering or specific page styling */}
 
-            <h1>Signup page</h1>
+            {/* <h1>Sign  Up</h1> */}
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
+                    ref={nameInputRef} // Attach the ref here
                     placeholder="Enter your username"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
