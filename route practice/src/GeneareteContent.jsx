@@ -93,7 +93,9 @@ export default function GeneareteContent() {
         "http://localhost:3000/user/GenerateData",
         { question: question },
         { withCredentials: true }
+       
       );
+      console.log("API Response:", resp); // Keep for debugging if needed
       // console.log("Generated Data from API:", resp.data); // Keep for debugging if needed
 
       let generatedText = DEFAULT_NO_CONTENT_MESSAGE;

@@ -716,7 +716,19 @@ label {
   box-sizing: border-box; /* Ensures padding doesn't expand width unexpectedly */
   white-space: nowrap; /* Prevent text wrapping if not desired */
 }
+/* ...existing code... */
 
+.twitter-button {
+    @apply transition-all duration-300;
+}
+
+.twitter-button:hover {
+    @apply transform -translate-y-0.5;
+}
+
+.twitter-auth-status {
+    @apply text-sm text-gray-600 mt-1;
+}
 .profile-dropdown-menu-on-page .dropdown-item:hover {
   background-color: var(--color-background-hover, #f5f5f5);
   color: var(
