@@ -149,9 +149,22 @@ UserRouter.get("/auth/twitter/oauth1/callback", async (req, res) => {
 UserRouter.get("/auth/twitter/status",usermiddleware, (req, res) => {
   const user = req.session.twitterUser;
   console.log(user)
+  console.log("statu scheck ",{
+    sessionId : req.sessionID,
+    hassession :!! req.session,
+    twitterUser : req.session?.twitterUser
+  })
+  if(!user)
+  {
+    console.log("no user found inteh seession ");
+    return res.json({
+      isConnected: false ,user: null
+    })
+  }
+  console.log("user found " ,user.screenName)
   res.json({
-    isConnected: !!user,
-    user: user || null,
+    isConnected: true,
+    user: user
   });
 });
 UserRouter.get("/auth/twitter/disconnetct",usermiddleware, async (req, res) => {

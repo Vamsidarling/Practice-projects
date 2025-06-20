@@ -17,7 +17,7 @@ export default function Layout() {
   const [trighistory, settrighistory] = useState(Date.now);
   const [isTwitterConnected, setIsTwitterConnected] = useState(false);
   const [twitterUser, setTwitterUser] = useState(null);
-  // const [showConfirmDialog, setShowConfirmDialog] = useState(false); // Add this line
+    // const [showConfirmDialog, setShowConfirmDialog] = useState(false); // Add this line
 
   const handleNewGenerationSession = () => {
     console.log("Layout: Start new generation session");
@@ -120,6 +120,8 @@ const handleDisconnect = async () => {
 
   const handleTwitterAuth = async () => {
     if (isTwitterConnected) {
+      navigate("/home")
+      //  toast.error("Twitter connection Connected");
       // setShowConfirmDialog(true); // Show dialog instead of immediate disconnect
       // console.log("Dialog state:", showConfirmDialog); // Debug log
     } else {
