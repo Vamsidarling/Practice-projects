@@ -55,9 +55,11 @@ UserRouter.post("/signup", async function (req, res) {
     });
   }
 });
+ 
 
 // UserRouter.get("/auth/ttwitter/oauth1/request-token", async (req, res) => {
 UserRouter.get("/auth/twitter/oauth1/request-token", async (req, res) => {
+  const callbackUrl = process.env.TWITTER_OAUTH1_CALLBACK_URL
   try {
     // Validate environment variables
     if (!process.env.Twitter_api_key || !process.env.Twitter_api_secret) {
@@ -71,8 +73,8 @@ UserRouter.get("/auth/twitter/oauth1/request-token", async (req, res) => {
     });
 
     // Generate auth link
-    const callbackUrl =
-      "https://media-generator-2yau.onrender.com/user/auth/twitter/oauth1/callback";
+    // const callbackUrl =
+    //   "https://media-generator-2yau.onrender.com/user/auth/twitter/oauth1/callback";
     console.log("Generating auth link with callback:", callbackUrl);
 
     const authLink = await client.generateAuthLink(callbackUrl);
