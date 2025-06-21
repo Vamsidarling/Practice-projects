@@ -38,7 +38,7 @@ app.use(
     maxAge: 86400, // 24 hours
   })
 );
-
+app.set('trust proxy', 1);
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -47,6 +47,7 @@ app.use(
     cookie: {
       secure: true,
       httpOnly: true,
+      sameSite: 'none', 
       maxAge: 24 * 60 * 60 * 1000,
     },
   })

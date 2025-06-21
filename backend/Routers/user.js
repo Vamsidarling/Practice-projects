@@ -55,11 +55,10 @@ UserRouter.post("/signup", async function (req, res) {
     });
   }
 });
- 
 
 // UserRouter.get("/auth/ttwitter/oauth1/request-token", async (req, res) => {
 UserRouter.get("/auth/twitter/oauth1/request-token", async (req, res) => {
-  const callbackUrl = process.env.TWITTER_OAUTH1_CALLBACK_URL
+  const callbackUrl = process.env.TWITTER_OAUTH1_CALLBACK_URL;
   try {
     // Validate environment variables
     if (!process.env.Twitter_api_key || !process.env.Twitter_api_secret) {
