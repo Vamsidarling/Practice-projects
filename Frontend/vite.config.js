@@ -10,7 +10,7 @@ export default defineConfig({
     proxy: {
       "/user": {
         // Match your actual API endpoint path
-        target: "http://localhost:3000",
+        target: "https://media-generator-lu6a.onrender.com",
         changeOrigin: true,
         credentials: true,
       },
