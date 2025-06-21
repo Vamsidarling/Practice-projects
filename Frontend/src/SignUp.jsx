@@ -25,7 +25,7 @@ export default function SignUp() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "https://media-generator-lu6a.onrender.com0/user/signup",
+        "https://media-generator-2yau.onrender.com/user/signup",
         {
           name,
           email,

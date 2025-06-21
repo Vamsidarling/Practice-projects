@@ -90,7 +90,7 @@ export default function GeneareteContent() {
     try {
       // console.log("Attempting to generate content for question:", question); // Keep for debugging if needed
       const resp = await axios.post(
-        "https://media-generator-lu6a.onrender.com/user/GenerateData",
+        "https://media-generator-2yau.onrender.com/user/GenerateData",
         { question: question },
         { withCredentials: true }
        

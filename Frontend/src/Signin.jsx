@@ -22,7 +22,7 @@ export default function Signin() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "https://media-generator-lu6a.onrender.com/user/signin",
+        "https://media-generator-2yau.onrender.com/user/signin",
         {
           email,password
         },

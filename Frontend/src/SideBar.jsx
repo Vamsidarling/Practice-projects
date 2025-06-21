@@ -17,7 +17,7 @@ export default function Sidebar({ onNewGeneration, onLoadHistory }) { // Added o
         setHistoryError('');
         try {
           // Replace with your actual backend endpoint for fetching history
-          const response = await axios.get('https://media-generator-lu6a.onrender.com/user/getPosts', { 
+          const response = await axios.get('https://media-generator-2yau.onrender.com/user/getPosts', { 
             withCredentials: true, // Important if your backend uses cookies/sessions for auth
           });
           // Assuming the backend returns an object with a 'data' array like your example

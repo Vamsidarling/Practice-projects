@@ -60,19 +60,19 @@ UserRouter.post("/signup", async function (req, res) {
 UserRouter.get("/auth/twitter/oauth1/request-token", async (req, res) => {
   try {
     // Validate environment variables
-    if (!process.env.TWITTER_API_KEY || !process.env.TWITTER_API_SECRET) {
+    if (!process.env.Twitter_api_key || !process.env.Twitter_api_secret) {
       throw new Error("Twitter API credentials not configured");
     }
 
     // Initialize Twitter client
     const client = new TwitterApi({
-      appKey: process.env.TWITTER_API_KEY,
-      appSecret: process.env.TWITTER_API_SECRET,
+      appKey: process.env.Twitter_api_key,
+      appSecret: process.env.Twitter_api_secret,
     });
 
     // Generate auth link
     const callbackUrl =
-      "https://media-generator-lu6a.onrender.com/user/auth/twitter/oauth1/callback";
+      "https://media-generator-2yau.onrender.com/user/auth/twitter/oauth1/callback";
     console.log("Generating auth link with callback:", callbackUrl);
 
     const authLink = await client.generateAuthLink(callbackUrl);
@@ -118,8 +118,8 @@ UserRouter.get("/auth/twitter/oauth1/callback", async (req, res) => {
     }
 
     const client = new TwitterApi({
-      appKey: process.env.TWITTER_API_KEY,
-      appSecret: process.env.TWITTER_API_SECRET,
+      appKey: process.env.Twitter_api_key,
+      appSecret: process.env.Twitter_api_secret,
       accessToken: oauth_token,
       accessSecret: oauth_token_secret,
     });

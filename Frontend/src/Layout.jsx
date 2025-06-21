@@ -37,7 +37,7 @@ export default function Layout() {
   };
 const handleDisconnect = async () => {
     try {
-        const response = await axios.get('https://media-generator-lu6a.onrender.com/user/auth/twitter/disconnetct',{
+        const response = await axios.get('https://media-generator-2yau.onrender.com/user/auth/twitter/disconnetct',{
             withCredentials: true
         });
 
@@ -92,7 +92,7 @@ const handleDisconnect = async () => {
     const checkTwitterStatus = async () => {
       try {
         const response = await fetch(
-          "https://media-generator-lu6a.onrender.com/user/auth/twitter/status",
+          "https://media-generator-2yau.onrender.com/user/auth/twitter/status",
           {
             credentials: "include",
           }
@@ -127,7 +127,7 @@ const handleDisconnect = async () => {
     } else {
       try {
         const response = await fetch(
-          "https://media-generator-lu6a.onrender.com/user/auth/twitter/oauth1/request-token"
+          "https://media-generator-2yau.onrender.com/user/auth/twitter/oauth1/request-token"
         );
         const data = await response.json();
         if (data.url) {
