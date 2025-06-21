@@ -8,17 +8,22 @@ const helmet = require("helmet");
 const compression = require("compression");
 const rateLimit = require("express-rate-limit");
 const morgan = require("morgan");
-const session = require('express-session');
+const session = require("express-session");
 const app = express();
 app.use(express.json());
 app.use(helmet());
 app.use(cookieParser());
 
-
-
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL, process.env.Second_url,process.env.Third_url,process.env.fourht_url,process.env.fifth_url],
+    origin: [
+      process.env.FRONTEND_URL,
+      process.env.Second_url,
+      process.env.Third_url,
+      process.env.fourht_url,
+      process.env.fifth_url,
+      process.env.Third_url,
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: [
@@ -34,19 +39,21 @@ app.use(
   })
 );
 
-app.use(session({
-	secret :process.env.SESSION_SECRET,
-	reserve : true,
-	saveUninitialized: false,
-	cookie: {
-		secure :true,
-		httpOnly: true,
-		maxAge : 24 * 60 * 60 * 1000
-	}
-}))
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    reserve: true,
+    saveUninitialized: false,
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    },
+  })
+);
 app.use((req, res, next) => {
-    console.log('Session:', req.sessionID);
-    next();
+  console.log("Session:", req.sessionID);
+  next();
 });
 // Request timeout
 app.use((req, res, next) => {
@@ -70,7 +77,6 @@ app.use((err, req, res, next) => {
         : "Internal server error",
   });
 });
-
 
 async function main() {
   try {

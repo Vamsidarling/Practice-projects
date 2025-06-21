@@ -2,9 +2,7 @@
 import AppComponent from "./AppRoutes";
 
 function App() {
-
-
-   return  <AppComponent />;
+  return <AppComponent />;
   // return <AppComponent />;
 }
 
