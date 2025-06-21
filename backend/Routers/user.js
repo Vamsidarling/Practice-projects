@@ -72,7 +72,7 @@ UserRouter.get("/auth/twitter/oauth1/request-token", async (req, res) => {
 
     // Generate auth link
     const callbackUrl =
-      "http://localhost:3000/user/auth/twitter/oauth1/callback";
+      "https://media-generator-lu6a.onrender.com/user/auth/twitter/oauth1/callback";
     console.log("Generating auth link with callback:", callbackUrl);
 
     const authLink = await client.generateAuthLink(callbackUrl);
@@ -140,71 +140,75 @@ UserRouter.get("/auth/twitter/oauth1/callback", async (req, res) => {
     tokenStore.delete(oauth_token);
 
     console.log("Authentication successful for:", screenName);
-    res.redirect("https://vamsidarling.github.io/Practice-projects/");
+    res.redirect("https://media-generator-six.vercel.app");
   } catch (error) {
     console.error("Callback error:", error);
-    res.redirect("http://localhost:5173/home?auth=failed");
+    res.redirect("https://media-generator-six.vercel.appfailed");
   }
 });
-UserRouter.get("/auth/twitter/status",usermiddleware, (req, res) => {
+UserRouter.get("/auth/twitter/status", usermiddleware, (req, res) => {
   const user = req.session.twitterUser;
-  console.log(user)
-  console.log("statu scheck ",{
-    sessionId : req.sessionID,
-    hassession :!! req.session,
-    twitterUser : req.session?.twitterUser
-  })
-  if(!user)
-  {
+  console.log(user);
+  console.log("statu scheck ", {
+    sessionId: req.sessionID,
+    hassession: !!req.session,
+    twitterUser: req.session?.twitterUser,
+  });
+  if (!user) {
     console.log("no user found inteh seession ");
     return res.json({
-      isConnected: false ,user: null
-    })
+      isConnected: false,
+      user: null,
+    });
   }
-  console.log("user found " ,user.screenName)
+  console.log("user found ", user.screenName);
   res.json({
     isConnected: true,
-    user: user
+    user: user,
   });
 });
-UserRouter.get("/auth/twitter/disconnetct",usermiddleware, async (req, res) => {
-  try {
-    // Log the session before disconnecting
-    console.log("Disconnecting user:", req.session.twitterUser?.screenName);
+UserRouter.get(
+  "/auth/twitter/disconnetct",
+  usermiddleware,
+  async (req, res) => {
+    try {
+      // Log the session before disconnecting
+      console.log("Disconnecting user:", req.session.twitterUser?.screenName);
 
-    if (!req.session.twitterUser) {
-      return res.status(400).json({
+      if (!req.session.twitterUser) {
+        return res.status(400).json({
+          success: false,
+          error: "Not connected to Twitter",
+        });
+      }
+
+      // Clear Twitter user data from session
+      const screenName = req.session.twitterUser.screenName;
+      delete req.session.twitterUser;
+
+      // Force session save
+      await new Promise((resolve, reject) => {
+        req.session.save((err) => {
+          if (err) reject(err);
+          else resolve();
+        });
+      });
+
+      console.log("Successfully disconnected Twitter user:", screenName);
+
+      res.json({
+        success: true,
+        message: "Twitter disconnected successfully",
+      });
+    } catch (error) {
+      console.error("Disconnect error:", error);
+      res.status(500).json({
         success: false,
-        error: "Not connected to Twitter",
+        error: "Failed to disconnect Twitter",
       });
     }
-
-    // Clear Twitter user data from session
-    const screenName = req.session.twitterUser.screenName;
-    delete req.session.twitterUser;
-
-    // Force session save
-    await new Promise((resolve, reject) => {
-      req.session.save((err) => {
-        if (err) reject(err);
-        else resolve();
-      });
-    });
-
-    console.log("Successfully disconnected Twitter user:", screenName);
-
-    res.json({
-      success: true,
-      message: "Twitter disconnected successfully",
-    });
-  } catch (error) {
-    console.error("Disconnect error:", error);
-    res.status(500).json({
-      success: false,
-      error: "Failed to disconnect Twitter",
-    });
   }
-});
+);
 
 UserRouter.post("/signin", async function (req, res) {
   const email = req.body.email;
