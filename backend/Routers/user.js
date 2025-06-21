@@ -146,6 +146,8 @@ UserRouter.get("/auth/twitter/oauth1/callback", async (req, res) => {
     res.redirect("https://media-generator-six.vercel.appfailed");
   }
 });
+
+UserRouter.get("/test", (req, res) => res.send("UserRouter test OK!"));
 UserRouter.get("/auth/twitter/status", usermiddleware, (req, res) => {
   const user = req.session.twitterUser;
   console.log(user);
