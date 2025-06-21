@@ -4,8 +4,8 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   // base: command === "serve" ? "/" : "/Practice-projects/",
-  base: "/Practice-projects/",
-  // base: '/',
+  // base: "/Practice-projects/",
+  base: '/',
   server: {
     proxy: {
       "/user": {
