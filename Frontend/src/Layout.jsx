@@ -126,7 +126,7 @@ const handleDisconnect = async (e) => {
 
     // Check URL for auth success after redirect from Twitter
     const params = new URLSearchParams(window.location.search);
-    if (params.get("auth") === "success" && user) {
+    if (params.get("auth") === "success") {
       toast.success("Twitter connected successfully!");
       // Clean the URL to prevent the toast from showing on every refresh
       navigate("/Home", { replace: true });
