@@ -14,7 +14,8 @@ export default function GeneareteContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef(null); // Create a ref for the input element
-  const outletContext = useOutletContext(); // Access Outlet context
+  const outletContext = useOutletContext(); // Access Outlet context for history, etc.
+  const isTwitterConnected = outletContext?.isTwitterConnected; // Get Twitter connection status from Layout
 
   // useEffect to focus the input field when the component mounts
   useEffect(() => {
@@ -142,6 +143,36 @@ export default function GeneareteContent() {
     setIsLoading(false);
   };
 
+  const handlePostTweet = async (tweetContent) => {
+    // 1. Check if Twitter is connected
+    if (!isTwitterConnected) {
+      toast.error("Please connect your Twitter account to post.");
+      return; // Stop the function
+    }
+
+    // 2. Show a confirmation dialog
+    const isConfirmed = window.confirm("Are you sure you want to post this tweet to your X account?");
+
+    // 3. If confirmed, proceed to post
+    if (isConfirmed) {
+      const toastId = toast.loading("Posting tweet..."); // Show a loading indicator
+      try {
+        // Assumes a backend endpoint exists to handle the post
+        const response = await axios.post(
+          "https://media-generator-2yau.onrender.com/user/auth/twitter/post",
+          { status: tweetContent }, // The tweet content
+          { withCredentials: true }
+        );
+
+        toast.update(toastId, { render: "Tweet posted successfully!", type: "success", isLoading: false, autoClose: 3000 });
+      } catch (err) {
+        console.error("Error posting tweet:", err);
+        const errorMessage = err.response?.data?.message || "Failed to post tweet. Please try again.";
+        toast.update(toastId, { render: errorMessage, type: "error", isLoading: false, autoClose: 3000 });
+      }
+    }
+  };
+
   return (
     <div className="generate-content-container" id="generate-content-area">
       <input
@@ -174,11 +205,10 @@ export default function GeneareteContent() {
             </div>
             <div className="post-footer">
               <p className="post-timestamp">{post.timestamp}</p>
-              {/* Use post.content directly to get the content of the current post */}
-              <a href={`https://x.com/compose/post?text=${encodeURIComponent(post.content)}`} target="_blank" rel="noopener noreferrer" className="post-action-button">
+              {/* This button now triggers our new posting logic */}
+              <button onClick={() => handlePostTweet(post.content)} className="post-action-button">
                 Post on X
-              </a>
-              
+              </button>
             </div>
           </div>
         ))}

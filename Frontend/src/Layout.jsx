@@ -292,6 +292,7 @@ const handleDisconnect = async (e) => {
                 clearSelectedHistory: () => setSelectedHistoryItem(null),
                 newSessionKey,
                 trighistorykey,
+                isTwitterConnected,
                 // Pass the new session key
               }}
             />
