@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { userAuth } from "./AuthContext";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { toast } from 'react-toastify';
+import ConfirmDialog from "./components/ConfirmDialog";
 
 const DEFAULT_NO_CONTENT_MESSAGE = "No content generated. (Default Fallback)";
 
@@ -10,12 +11,27 @@ export default function GeneareteContent() {
   const { user } = userAuth(); // Get the current user from context
   const navigate = useNavigate(); // Hook for programmatic navigation
   const [question, setQuestion] = useState("");
-  const [posts, setPosts] = useState([]); // To store generated posts
+  // Initialize state from sessionStorage to persist posts across page reloads/redirects.
+  const [posts, setPosts] = useState(() => {
+    try {
+      const savedPosts = sessionStorage.getItem('generatedPosts');
+      return savedPosts ? JSON.parse(savedPosts) : [];
+    } catch (error) {
+      return [];
+    }
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef(null); // Create a ref for the input element
   const outletContext = useOutletContext(); // Access Outlet context for history, etc.
   const isTwitterConnected = outletContext?.isTwitterConnected; // Get Twitter connection status from Layout
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const [tweetToPost, setTweetToPost] = useState('');
+
+  // Persist posts to sessionStorage whenever they change.
+  useEffect(() => {
+    sessionStorage.setItem('generatedPosts', JSON.stringify(posts));
+  }, [posts]);
 
   // useEffect to focus the input field when the component mounts
   useEffect(() => {
@@ -33,9 +49,10 @@ export default function GeneareteContent() {
       // simply reacting to its presence and change is enough to clear.
       setQuestion("");
       setPosts([]);
+      sessionStorage.removeItem('generatedPosts'); // Also clear storage
       setError(""); // Also clear any existing errors
     }
-  }, [outletContext?.newSessionKey]); // Depend specifically on newSessionKey from context
+  }, [outletContext?.newSessionKey]);
 
   // Effect to load history when selectedHistoryItem changes from Layout
   useEffect(() => {
@@ -65,7 +82,7 @@ export default function GeneareteContent() {
         outletContext.clearSelectedHistory();
       }
     }
-  }, [outletContext]); // Depend on the entire outletContext object
+  }, [outletContext?.selectedHistoryItem, outletContext?.clearSelectedHistory]); // Depend on specific context properties
 
   const Generate = async (e) => {
     e.preventDefault();
@@ -143,33 +160,42 @@ export default function GeneareteContent() {
     setIsLoading(false);
   };
 
-  const handlePostTweet = async (tweetContent) => {
+  const handlePostTweet = (tweetContent) => {
     // 1. Check if Twitter is connected
     if (!isTwitterConnected) {
       toast.error("Please connect your Twitter account to post.");
       return; // Stop the function
     }
 
-    // 2. Show a confirmation dialog
-    const isConfirmed = window.confirm("Are you sure you want to post this tweet to your X account?");
+    // 2. Set the content to be posted and open the custom dialog
+    setTweetToPost(tweetContent);
+    setIsConfirmDialogOpen(true);
+  };
 
-    // 3. If confirmed, proceed to post
-    if (isConfirmed) {
-      const toastId = toast.loading("Posting tweet..."); // Show a loading indicator
-      try {
-        // Assumes a backend endpoint exists to handle the post
-        const response = await axios.post(
-          "https://media-generator-2yau.onrender.com/user/auth/twitter/post",
-          { status: tweetContent }, // The tweet content
-          { withCredentials: true }
-        );
+  // This function is called when the user clicks "Confirm" in the dialog
+  const confirmAndPostTweet = async () => {
+    // Close the dialog first
+    setIsConfirmDialogOpen(false);
 
-        toast.update(toastId, { render: "Tweet posted successfully!", type: "success", isLoading: false, autoClose: 3000 });
-      } catch (err) {
-        console.error("Error posting tweet:", err);
-        const errorMessage = err.response?.data?.message || "Failed to post tweet. Please try again.";
-        toast.update(toastId, { render: errorMessage, type: "error", isLoading: false, autoClose: 3000 });
-      }
+    const toastId = toast.loading("Posting tweet..."); // Show a loading indicator
+    try {
+      // Assumes a backend endpoint exists to handle the post
+      const response = await axios.post(
+        "https://media-generator-2yau.onrender.com/user/auth/twitter/post",
+        { status: tweetToPost }, // Use the tweet content from state
+        { withCredentials: true }
+      );
+
+      toast.update(toastId, { render: "Tweet posted successfully!", type: "success", isLoading: false, autoClose: 3000 });
+    } catch (err) {
+      console.error("Error posting tweet:", err);
+      const errorMessage =
+        err.response?.data?.message ||
+        "Failed to post tweet. Please try again.";
+      toast.update(toastId, { render: errorMessage, type: "error", isLoading: false, autoClose: 3000 });
+    } finally {
+      // Clear the tweet content from state after the attempt
+      setTweetToPost('');
     }
   };
 
@@ -213,6 +239,15 @@ export default function GeneareteContent() {
           </div>
         ))}
       </div>
+
+      <ConfirmDialog
+        isOpen={isConfirmDialogOpen}
+        onClose={() => setIsConfirmDialogOpen(false)}
+        onConfirm={confirmAndPostTweet}
+        title="Confirm Tweet"
+      >
+        <p>Are you sure you want to post this to your X account?</p>
+      </ConfirmDialog>
     </div>
   );
 }

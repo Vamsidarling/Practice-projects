@@ -27,7 +27,7 @@ export default function Layout() {
   const [trighistory, settrighistory] = useState(Date.now);
   const [isTwitterConnected, setIsTwitterConnected] = useState(false);
   const [twitterUser, setTwitterUser] = useState(null);
-    // const [showConfirmDialog, setShowConfirmDialog] = useState(false); // Add this line
+  // const [showConfirmDialog, setShowConfirmDialog] = useState(false); // Add this line
 
   const handleNewGenerationSession = () => {
     console.log("Layout: Start new generation session");
@@ -46,27 +46,25 @@ export default function Layout() {
     navigate("/Home"); // Navigate to where GeneareteContent is displayed
   };
   const handleDisconnect = async () => {
-    // Add a confirmation dialog for better UX
-    if (!window.confirm(`Are you sure you want to disconnect from @${twitterUser?.screenName}?`)) {
-      return;
-    }
-
     try {
-        const response = await axios.get('https://media-generator-2yau.onrender.com/user/auth/twitter/disconnect',{
-            withCredentials: true
-        });
-
-        if (response.status === 200) {
-            setIsTwitterConnected(false);
-            setTwitterUser(null);
-            // setShowConfirmDialog(false);
-            toast.success('Twitter disconnected successfully');
+      const response = await axios.get(
+        "https://media-generator-2yau.onrender.com/user/auth/twitter/disconnetct",
+        {
+          withCredentials: true,
         }
+      );
+
+      if (response.status === 200) {
+        setIsTwitterConnected(false);
+        setTwitterUser(null);
+        // setShowConfirmDialog(false);
+        toast.success("Twitter disconnected successfully");
+      }
     } catch (error) {
-        console.error('Disconnect error:', error);
-        toast.error('Failed to disconnect Twitter');
+      console.error("Disconnect error:", error);
+      toast.error("Failed to disconnect Twitter");
     }
-};
+  };
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -102,19 +100,13 @@ export default function Layout() {
     setIsProfileDropdownOpen(false); // Close the dropdown
   };
 
-  // This effect ONLY handles the redirect after a successful Twitter login.
-  // It runs when the component first loads to check the URL.
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("auth") === "success") {
-      toast.success("Twitter connected successfully!");
-      // Explicitly navigate to /Home and clean the URL.
-      navigate("/Home", { replace: true });
-    }
-  }, [navigate]); // Runs once on mount, and when navigate function changes (which is stable).
-
   // This effect ONLY syncs the Twitter connection status with the user's login state.
   useEffect(() => {
+    // Detect a successful login: previous user was null, current user exists.
+    if (!prevUser && user) {
+      toast.success(`Welcome back, ${user.name}!`);
+    }
+
     const checkTwitterStatus = async () => {
       if (user) {
         try {
@@ -143,7 +135,6 @@ export default function Layout() {
     checkTwitterStatus();
   }, [user, prevUser]); // Reruns only when user state changes.
 
-  
   const handleTwitterAuth = async () => {
     if (!isTwitterConnected) {
       try {
@@ -213,7 +204,9 @@ export default function Layout() {
               {user ? (
                 <>
                   <button
-                    onClick={isTwitterConnected ? handleDisconnect : handleTwitterAuth}
+                    onClick={
+                      isTwitterConnected ? handleDisconnect : handleTwitterAuth
+                    }
                     className={`px-4 py-2 rounded-md transition-colors ${
                       isTwitterConnected
                         ? "bg-red-500 hover:bg-red-600"
@@ -222,9 +215,7 @@ export default function Layout() {
                   >
                     {isTwitterConnected
                       ? `Disconnect @${twitterUser?.screenName}`
-                      : (
-                      "Connect Twitter"
-                    )}
+                      : "Connect Twitter"}
                   </button>
                   <div
                     className="profile-menu-widget-container"
@@ -260,7 +251,9 @@ export default function Layout() {
                         >
                           Signed in as in the <br />
                           <strong>{user.name}</strong>
-                          <button onClick={ViewProfile}>View Profile Page</button>
+                          <button onClick={ViewProfile}>
+                            View Profile Page
+                          </button>
                         </div>
                         {/* <Link to="/" className="dropdown-item" role="menuitem" onClick={() => setIsProfileDropdownOpen(false)}>View Profile Page</Link> */}
                         <button
@@ -302,7 +295,6 @@ export default function Layout() {
       </div>
 
       {/* Add dialog with console log for debugging */}
-    
     </>
   );
 }

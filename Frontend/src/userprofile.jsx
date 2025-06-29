@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { userAuth } from "./AuthContext";
 import { useNavigate, Navigate, Link } from "react-router-dom"; // Added Navigate and Link
 import { toast } from "react-toastify"; // Added toast import
@@ -8,6 +8,18 @@ export function ProfileWrapper() {
   const { user, logout } = userAuth();
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState("view"); // 'view', 'edit', 'settings', 'security'
+
+  // This effect handles the redirect after a successful Twitter login.
+  // It runs when this component loads to check the URL for the success flag.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("auth") === "success") {
+      toast.success("Twitter connected successfully!");
+      // Explicitly navigate to /Home and clean the URL.
+      // This is the correct place for this logic.
+      navigate("/Home", { replace: true });
+    }
+  }, [navigate]); // Runs once on mount.
 
   const handleLogout = () => {
     logout();
