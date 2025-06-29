@@ -189,72 +189,74 @@ const handleDisconnect = async () => {
             </div>
 
             <nav>
-              <button
-                onClick={handleTwitterAuth}
-                className={`px-4 py-2 rounded-md transition-colors ${
-                  isTwitterConnected
-                    ? "bg-red-500 hover:bg-red-600"
-                    : "bg-blue-400 hover:bg-blue-500"
-                } text-white`}
-              >
-                {isTwitterConnected ? (
-                  <div className="flex items-center gap-2">
-                    <span onClick={handleDisconnect}>
-                      Disconnect @{twitterUser?.screenName}
-                    </span>
-                  </div>
-                ) : (
-                  "Connect Twitter"
-                )}
-              </button>
               {user ? (
-                <div
-                  className="profile-menu-widget-container"
-                  ref={profileDropdownRef}
-                >
+                <>
                   <button
-                    onClick={toggleProfileDropdown}
-                    className="profile-menu-trigger-button header-profile-trigger" /* Added header-profile-trigger for specific styling */
-                    aria-expanded={isProfileDropdownOpen}
-                    aria-controls="header-profile-options-menu"
-                    title={user.name || "User Profile"} // Tooltip for hover
+                    onClick={handleTwitterAuth}
+                    className={`px-4 py-2 rounded-md transition-colors ${
+                      isTwitterConnected
+                        ? "bg-red-500 hover:bg-red-600"
+                        : "bg-blue-400 hover:bg-blue-500"
+                    } text-white`}
                   >
-                    {/* Display first letter of user's name or a default icon/letter */}
-                    <span className="profile-icon-initials">
-                      {user.name ? user.name.charAt(0).toUpperCase() : "P"}
-                    </span>
-                    <span
-                      className={`dropdown-arrow ${
-                        isProfileDropdownOpen ? "open" : ""
-                      }`}
-                    ></span>{" "}
-                    {/* Arrow will be styled via CSS */}
-                  </button>
-                  {isProfileDropdownOpen && (
-                    <div
-                      className="profile-dropdown-menu-on-page header-profile-dropdown"
-                      id="header-profile-options-menu"
-                      role="menu"
-                    >
-                      <div
-                        className="dropdown-item user-greeting-item"
-                        role="menuitem"
-                      >
-                        Signed in as in the <br />
-                        <strong>{user.name}</strong>
-                        <button onClick={ViewProfile}>View Profile Page</button>
+                    {isTwitterConnected ? (
+                      <div className="flex items-center gap-2">
+                        <span onClick={handleDisconnect}>
+                          Disconnect @{twitterUser?.screenName}
+                        </span>
                       </div>
-                      {/* <Link to="/" className="dropdown-item" role="menuitem" onClick={() => setIsProfileDropdownOpen(false)}>View Profile Page</Link> */}
-                      <button
-                        onClick={handleLogout}
-                        className="dropdown-item logout-item"
-                        role="menuitem"
+                    ) : (
+                      "Connect Twitter"
+                    )}
+                  </button>
+                  <div
+                    className="profile-menu-widget-container"
+                    ref={profileDropdownRef}
+                  >
+                    <button
+                      onClick={toggleProfileDropdown}
+                      className="profile-menu-trigger-button header-profile-trigger" /* Added header-profile-trigger for specific styling */
+                      aria-expanded={isProfileDropdownOpen}
+                      aria-controls="header-profile-options-menu"
+                      title={user.name || "User Profile"} // Tooltip for hover
+                    >
+                      {/* Display first letter of user's name or a default icon/letter */}
+                      <span className="profile-icon-initials">
+                        {user.name ? user.name.charAt(0).toUpperCase() : "P"}
+                      </span>
+                      <span
+                        className={`dropdown-arrow ${
+                          isProfileDropdownOpen ? "open" : ""
+                        }`}
+                      ></span>{" "}
+                      {/* Arrow will be styled via CSS */}
+                    </button>
+                    {isProfileDropdownOpen && (
+                      <div
+                        className="profile-dropdown-menu-on-page header-profile-dropdown"
+                        id="header-profile-options-menu"
+                        role="menu"
                       >
-                        Logout
-                      </button>
-                    </div>
-                  )}
-                </div>
+                        <div
+                          className="dropdown-item user-greeting-item"
+                          role="menuitem"
+                        >
+                          Signed in as in the <br />
+                          <strong>{user.name}</strong>
+                          <button onClick={ViewProfile}>View Profile Page</button>
+                        </div>
+                        {/* <Link to="/" className="dropdown-item" role="menuitem" onClick={() => setIsProfileDropdownOpen(false)}>View Profile Page</Link> */}
+                        <button
+                          onClick={handleLogout}
+                          className="dropdown-item logout-item"
+                          role="menuitem"
+                        >
+                          Logout
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </>
               ) : (
                 <>
                   <Link to="/SignUp">
