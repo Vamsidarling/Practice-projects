@@ -18,10 +18,6 @@ app.use(
   cors({
     origin: [
       process.env.FRONTEND_URL,
-      process.env.secondurl,
-      process.env.Third_url,
-      process.env.fourht_url,
-      process.env.fifth_url,
       process.env.Third_url,
     ],
     credentials: true,

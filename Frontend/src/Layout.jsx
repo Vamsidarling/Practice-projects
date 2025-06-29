@@ -10,6 +10,16 @@ export default function Layout() {
   const { user, logout } = userAuth(); // Get logout from userAuth
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State for sidebar visibility, default to open
+
+  // This ref tracks the previous state of the user. It's crucial for
+  // distinguishing between the initial app load (where `user` is temporarily null)
+  // and an actual logout event (where `user` changes from an object to null).
+  const prevUserRef = useRef();
+  useEffect(() => {
+    prevUserRef.current = user;
+  });
+  const prevUser = prevUserRef.current;
+
   const [selectedHistoryItem, setSelectedHistoryItem] = useState(null); // To store the selected history item
   const [newSessionKey, setNewSessionKey] = useState(Date.now()); // Key to trigger new session in GeneareteContent
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -115,8 +125,11 @@ const handleDisconnect = async (e) => {
           setIsTwitterConnected(false); // Reset on error
           setTwitterUser(null);
         }
-      } else {
-        // If there is no user, reset the Twitter connection state.
+      } else if (prevUser && !user) {
+        // This block now only runs on an explicit logout, not on initial load.
+        // `prevUser` would have a value from the previous render, and `user` is now null.
+        // This prevents the Twitter state from being cleared during the initial
+        // authentication check when `user` is temporarily null.
         setIsTwitterConnected(false);
         setTwitterUser(null);
       }
@@ -131,7 +144,7 @@ const handleDisconnect = async (e) => {
       // Clean the URL to prevent the toast from showing on every refresh
       navigate("/Home", { replace: true });
     }
-  }, [user, navigate]); // Rerun this effect when the user logs in or out
+  }, [user, navigate, prevUser]); // Rerun this effect when the user logs in or out
 
   
   const handleTwitterAuth = async () => {

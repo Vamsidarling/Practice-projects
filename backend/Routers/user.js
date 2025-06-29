@@ -148,7 +148,7 @@ UserRouter.get("/auth/twitter/oauth1/callback", async (req, res) => {
   }
 });
 
-UserRouter.get("/test", (req, res) => res.send("UserRouter test OK!"));
+// UserRouter.get("/test", (req, res) => res.send("UserRouter test OK!"));
 UserRouter.get("/auth/twitter/status", usermiddleware, (req, res) => {
   const user = req.session.twitterUser;
   console.log(user);
@@ -386,6 +386,55 @@ UserRouter.get("/getPosts", usermiddleware, async function (req, res) {
   });
 });
 
+
+UserRouter.post('/auth/twitter/post',  async (req, res) => {
+  const { status } = req.body;
+  const userId = req.user.id; // From your isLoggedIn middleware
+
+  // Basic validation for the tweet content
+  if (!status || status.trim().length === 0) {
+    return res.status(400).json({ message: 'Tweet content cannot be empty.' });
+  }
+
+  try {
+    // 1. Find the user in the database
+    const user = await User.findById(userId);
+
+    // 2. **Security Check**: Verify the user has valid Twitter tokens stored.
+    // This is crucial because the backend cannot trust the frontend.
+    if (!user || !user.twitterAccessToken || !user.twitterAccessTokenSecret) {
+      return res.status(403).json({ message: 'Twitter account not connected or user not found. Please connect your account.' });
+    }
+
+    // 3. Initialize the Twitter client with the specific user's credentials
+    const userClient = new TwitterApi({
+      appKey: process.env.TWITTER_API_KEY,
+      appSecret: process.env.TWITTER_API_SECRET,
+      accessToken: user.twitterAccessToken,
+      accessSecret: user.twitterAccessTokenSecret,
+    });
+
+    // 4. Post the tweet
+    const { data: createdTweet } = await userClient.v2.tweet(status);
+
+    // 5. Send a success response
+    return res.status(200).json({
+      message: 'Tweet posted successfully!',
+      data: createdTweet,
+    });
+
+  } catch (error) {
+    console.error('Error posting tweet:', error);
+    // Handle specific Twitter API errors
+    if (error.code === 403) {
+      return res.status(403).json({ message: 'Failed to post. This may be a duplicate tweet or violate Twitter rules.' });
+    }
+    if (error.code === 401) {
+        return res.status(401).json({ message: 'Authentication failed. Please try reconnecting your Twitter account.' });
+    }
+    return res.status(500).json({ message: 'An internal server error occurred.' });
+  }
+});
 // UserRouter.post("/getDetailsWithQuestion", usermiddleware, async function (req, res) {
 //   const userId = req.user.userid;
 //   const question = req.body.question; // Get question from request body
