@@ -35,7 +35,8 @@ export default function Layout() {
     // toast.info(`Loaded history: ${historyItem.question.substring(0,20)}...`);
     navigate("/Home"); // Navigate to where GeneareteContent is displayed
   };
-const handleDisconnect = async () => {
+const handleDisconnect = async (e) => {
+    e.stopPropagation(); // Prevent the parent button's onClick from firing
     try {
         const response = await axios.get('https://media-generator-2yau.onrender.com/user/auth/twitter/disconnetct',{
             withCredentials: true
@@ -90,34 +91,49 @@ const handleDisconnect = async () => {
   useEffect(() => {
     // Check Twitter status on mount and URL changes
     const checkTwitterStatus = async () => {
-      try {
-        const response = await fetch(
-          "https://media-generator-2yau.onrender.com/user/auth/twitter/status",
-          {
-            credentials: "include",
-          }
-        );
-        const data = await response.json();
+      // Only check the status if a user is logged in.
+      if (user) {
+        try {
+          const response = await fetch(
+            "https://media-generator-2yau.onrender.com/user/auth/twitter/status",
+            {
+              credentials: "include",
+            }
+          );
+          const data = await response.json();
 
-        if (data.isConnected && data.user) {
-          setIsTwitterConnected(true);
-          setTwitterUser(data.user);
-          toast.success(`Connected as @${data.user.screenName}`);
+          if (data.isConnected && data.user) {
+            setIsTwitterConnected(true);
+            setTwitterUser(data.user);
+          } else {
+            // Explicitly set to false if API says not connected
+            setIsTwitterConnected(false);
+            setTwitterUser(null);
+          }
+        } catch (error) {
+          console.error("Status check failed:", error);
+          setIsTwitterConnected(false); // Reset on error
+          setTwitterUser(null);
         }
-      } catch (error) {
-        console.error("Status check failed:", error);
+      } else {
+        // If there is no user, reset the Twitter connection state.
+        setIsTwitterConnected(false);
+        setTwitterUser(null);
       }
     };
 
     checkTwitterStatus();
 
-    // Check URL for auth status
+    // Check URL for auth success after redirect from Twitter
     const params = new URLSearchParams(window.location.search);
-    if (params.get("auth") === "success") {
+    if (params.get("auth") === "success" && user) {
       toast.success("Twitter connected successfully!");
+      // Clean the URL to prevent the toast from showing on every refresh
+      navigate("/Home", { replace: true });
     }
-  }, []);
+  }, [user, navigate]); // Rerun this effect when the user logs in or out
 
+  
   const handleTwitterAuth = async () => {
     if (isTwitterConnected) {
       navigate("/home")
