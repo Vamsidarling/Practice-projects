@@ -169,13 +169,13 @@ export default function GeneareteContent() {
 
     // 2. Set the content to be posted and open the custom dialog
     setTweetToPost(tweetContent);
-    setIsConfirmDialogOpen(true);
+    // setIsConfirmDialogOpen(true);
   };
 
   // This function is called when the user clicks "Confirm" in the dialog
   const confirmAndPostTweet = async () => {
     // Close the dialog first
-    setIsConfirmDialogOpen(false);
+    // setIsConfirmDialogOpen(false);
 
     const toastId = toast.loading("Posting tweet..."); // Show a loading indicator
     try {
@@ -239,15 +239,15 @@ export default function GeneareteContent() {
           </div>
         ))}
       </div>
-
+{/* 
       <ConfirmDialog
-        isOpen={isConfirmDialogOpen}
-        onClose={() => setIsConfirmDialogOpen(false)}
+        // isOpen={isConfirmDialogOpen}
+        // onClose={() => setIsConfirmDialogOpen(false)}
         onConfirm={confirmAndPostTweet}
         title="Confirm Tweet"
       >
         <p>Are you sure you want to post this to your X account?</p>
-      </ConfirmDialog>
+      </ConfirmDialog> */}
     </div>
   );
 }
