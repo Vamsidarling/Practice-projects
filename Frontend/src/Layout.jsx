@@ -45,10 +45,14 @@ export default function Layout() {
     // toast.info(`Loaded history: ${historyItem.question.substring(0,20)}...`);
     navigate("/Home"); // Navigate to where GeneareteContent is displayed
   };
-const handleDisconnect = async (e) => {
-    e.stopPropagation(); // Prevent the parent button's onClick from firing
+  const handleDisconnect = async () => {
+    // Add a confirmation dialog for better UX
+    if (!window.confirm(`Are you sure you want to disconnect from @${twitterUser?.screenName}?`)) {
+      return;
+    }
+
     try {
-        const response = await axios.get('https://media-generator-2yau.onrender.com/user/auth/twitter/disconnetct',{
+        const response = await axios.get('https://media-generator-2yau.onrender.com/user/auth/twitter/disconnect',{
             withCredentials: true
         });
 
@@ -98,62 +102,50 @@ const handleDisconnect = async (e) => {
     setIsProfileDropdownOpen(false); // Close the dropdown
   };
 
+  // This effect ONLY handles the redirect after a successful Twitter login.
+  // It runs when the component first loads to check the URL.
   useEffect(() => {
-    // Check Twitter status on mount and URL changes
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("auth") === "success") {
+      toast.success("Twitter connected successfully!");
+      // Explicitly navigate to /Home and clean the URL.
+      navigate("/Home", { replace: true });
+    }
+  }, [navigate]); // Runs once on mount, and when navigate function changes (which is stable).
+
+  // This effect ONLY syncs the Twitter connection status with the user's login state.
+  useEffect(() => {
     const checkTwitterStatus = async () => {
-      // Only check the status if a user is logged in.
       if (user) {
         try {
           const response = await fetch(
             "https://media-generator-2yau.onrender.com/user/auth/twitter/status",
-            {
-              credentials: "include",
-            }
+            { credentials: "include" }
           );
           const data = await response.json();
-
           if (data.isConnected && data.user) {
             setIsTwitterConnected(true);
             setTwitterUser(data.user);
           } else {
-            // Explicitly set to false if API says not connected
             setIsTwitterConnected(false);
             setTwitterUser(null);
           }
         } catch (error) {
           console.error("Status check failed:", error);
-          setIsTwitterConnected(false); // Reset on error
+          setIsTwitterConnected(false);
           setTwitterUser(null);
         }
       } else if (prevUser && !user) {
-        // This block now only runs on an explicit logout, not on initial load.
-        // `prevUser` would have a value from the previous render, and `user` is now null.
-        // This prevents the Twitter state from being cleared during the initial
-        // authentication check when `user` is temporarily null.
         setIsTwitterConnected(false);
         setTwitterUser(null);
       }
     };
-
     checkTwitterStatus();
-
-    // Check URL for auth success after redirect from Twitter
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("auth") === "success") {
-      toast.success("Twitter connected successfully!");
-      // Clean the URL to prevent the toast from showing on every refresh
-      navigate("/Home", { replace: true });
-    }
-  }, [user, navigate, prevUser]); // Rerun this effect when the user logs in or out
+  }, [user, prevUser]); // Reruns only when user state changes.
 
   
   const handleTwitterAuth = async () => {
-    if (isTwitterConnected) {
-      navigate("/home")
-      //  toast.error("Twitter connection Connected");
-      // setShowConfirmDialog(true); // Show dialog instead of immediate disconnect
-      // console.log("Dialog state:", showConfirmDialog); // Debug log
-    } else {
+    if (!isTwitterConnected) {
       try {
         const response = await fetch(
           "https://media-generator-2yau.onrender.com/user/auth/twitter/oauth1/request-token"
@@ -221,20 +213,16 @@ const handleDisconnect = async (e) => {
               {user ? (
                 <>
                   <button
-                    onClick={handleTwitterAuth}
+                    onClick={isTwitterConnected ? handleDisconnect : handleTwitterAuth}
                     className={`px-4 py-2 rounded-md transition-colors ${
                       isTwitterConnected
                         ? "bg-red-500 hover:bg-red-600"
                         : "bg-blue-400 hover:bg-blue-500"
                     } text-white`}
                   >
-                    {isTwitterConnected ? (
-                      <div className="flex items-center gap-2">
-                        <span onClick={handleDisconnect}>
-                          Disconnect @{twitterUser?.screenName}
-                        </span>
-                      </div>
-                    ) : (
+                    {isTwitterConnected
+                      ? `Disconnect @${twitterUser?.screenName}`
+                      : (
                       "Connect Twitter"
                     )}
                   </button>
